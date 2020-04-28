@@ -67,10 +67,10 @@ casosprov %>% select(Provincia, Casos, Población, Tasa) %>% arrange(desc(Tasa))
 
                                                         ### Trabajando con muertes ###
 muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
-                              Sexo = as_factor(sexo),
-                              Nacionalidad = as_factor(Nacionalidad),
-                              Municipio = as_factor(municipio),
-                              Provincia = as_factor(provincia),                                
+                              sexo = as_factor(sexo),
+                              nacionalidad = as_factor(Nacionalidad),
+                              municipio = as_factor(municipio),
+                              provincia = as_factor(provincia),                                
                               rango = cut(edad,
                                           breaks = c(0,19,39,59,79,Inf),
                                           right = T,
@@ -110,13 +110,33 @@ total <- c(rowSums(t(select(muertes,
 
 Factores <- tibble(Factor.Riesgo = as.factor(factor), Total = total)
 
+# Explorando tiempo de detección de COVID-19 vs Fecha de fallecimiento en Pacientes fallecidos
+
+class.muertes <- muertes %>%  select(`Fecha de fallecimiento`, `Fecha de detección`, Nacionalidad, sexo, edad) %>% 
+  mutate(tiempo.detección = as.numeric(`Fecha de fallecimiento` - `Fecha de detección`)/(60*60*24),
+         clasificación = as.factor(ifelse(tiempo.detección > 0, "Antes del deceso", 
+                                          ifelse(tiempo.detección < 0, "Después del deceso", "Mismo día del deceso"))),
+         rango = cut(edad,
+                     breaks = c(0,19,39,59,79,Inf),
+                     right = T,
+                     labels =c("0-19", "20-39", "40-59","60-79","80 o más")),
+         rango2 = cut(edad,
+                      breaks = c(0,9,19,29,39,49,59,69,79,89,99,Inf),
+                      right = T, 
+                      labels =c("0-9","10-19","20-29", "30-39","40-49", "50-59","60-69", "70-79","80-89",
+                                "90-99", "100 o más")))
+
+
+
+
+
 ## Salva de los datos para su análisis
 
 save(cubadata, file = "rda/cubadata.rda")
 save(casos, file = "rda/casos.rda")
 save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
-
+save(class.muertes, file = "rda/class.muertes.rda")
 
 
 

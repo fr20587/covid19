@@ -226,3 +226,30 @@ Factores %>% mutate(Factor.Riesgo = reorder(Factor.Riesgo, Total)) %>%
         panel.grid.major.y = element_blank())
   
 ggsave("figs/factores.riesgos.png", width = 30, height = 20, units = "cm")
+
+
+# Representando la detección de casos detectados con COVID-19 con respecto a la fecha de deceso
+
+count(class.muertes, clasificación) %>% mutate(clasificación = reorder(clasificación, n)) %>% 
+  ggplot(aes(x = n, xend = 0,
+             y = clasificación, yend = clasificación,
+             colour = clasificación)) +
+  geom_point(show.legend = F) +
+  geom_segment(show.legend = F) +
+  geom_text(aes(label = n), show.legend = F, hjust = -1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(x = "", y = "",
+       title = "Casos detectados con COVID-19 con respecto a la fecha de deceso:",
+       subtitle = "NA: Casos que no he podido emparejar la fecha de detección con la fecha de fallecimiento al no informarse 
+       la provincia y el municipio en el parte oficial o que las edades y sexos dados en el informe oficial no coincide 
+       con ninguno de los casos idetificados para esa provincia y municipio",
+       caption = "Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
+       Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/muertes.xlsx\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme_ipsum() + 
+  theme(axis.text.x=element_text(angle=0, hjust = 1),
+        panel.grid.major.y = element_blank())
+
+ggsave("figs/class.muertes.png", width = 30, height = 20, units = "cm")
+
+

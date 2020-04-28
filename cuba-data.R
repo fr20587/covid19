@@ -70,7 +70,7 @@ muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
                               Sexo = as_factor(sexo),
                               Nacionalidad = as_factor(Nacionalidad),
                               Municipio = as_factor(municipio),
-                              Provinvia = as_factor(provincia),                                
+                              Provincia = as_factor(provincia),                                
                               rango = cut(edad,
                                           breaks = c(0,19,39,59,79,Inf),
                                           right = T,
@@ -81,12 +81,41 @@ muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
                                            labels =c("0-9","10-19","20-29", "30-39","40-49", "50-59","60-69", "70-79","80-89",
                                                      "90-99", "100 o más")))
 
+  ### Creando Tabla de Factores de Reiesgos
+factor <- c(colnames(select(muertes, 
+                            -`Fecha de fallecimiento`, 
+                            -`Fecha de detección`, 
+                            -sexo,
+                            -Sexo, -edad, 
+                            -Nacionalidad, 
+                            -diasevolucion, 
+                            -Municipio, -municipio,
+                            -Provincia, -provincia,
+                            -rango,
+                            -rango2,
+                            -FechaF)))
+
+total <- c(rowSums(t(select(muertes, 
+                            -`Fecha de fallecimiento`, 
+                            -`Fecha de detección`, 
+                            -Sexo, -sexo,
+                            -edad, 
+                            -Nacionalidad, 
+                            -diasevolucion, 
+                            -Municipio, -municipio,
+                            -Provincia, -provincia,
+                            -rango,
+                            -rango2,
+                            -FechaF)), na.rm = T))
+
+Factores <- tibble(Factor.Riesgo = as.factor(factor), Total = total)
+
 ## Salva de los datos para su análisis
 
 save(cubadata, file = "rda/cubadata.rda")
 save(casos, file = "rda/casos.rda")
 save(casosprov, file = "rda/casosprov.rda")
-
+save(Factores, file = "rda/factores.riesgos.rda")
 
 
 

@@ -5,7 +5,7 @@ library(hrbrthemes)
 load("rda/cubadata.rda")
 load("rda/casos.rda")
 load("rda/casosprov.rda")
-
+load("rda/factores.riesgos.rda")
 
 # Distribución de casos por edades por Provicias
 cubadata %>% 
@@ -35,11 +35,14 @@ ggsave("figs/casosedades.png", width = 30, height = 20, units = "cm")
 # Distribución de casos por rangos de edades por Provincias
 
 
-as_tibble(table(Rango = cubadata$rango, Provincias = cubadata$provincia)) %>%
-  rename(n, Cantidad = n) %>% 
+rango.c <- as_tibble(table(Rango = cubadata$rango, Provincias = cubadata$provincia)) %>%
+  rename(n, Cantidad = n) 
+
+rango.c %>% 
   mutate(Rango = as_factor(Rango), Provincias = as_factor(Provincias)) %>% 
   ggplot(aes(Provincias, Rango, fill = Cantidad)) +
   geom_tile() +
+  geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.c$Cantidad < 50, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x="", y="Rango Etario",
        title="Casos:",
@@ -56,11 +59,14 @@ ggsave("figs/rangoedades.png", width = 30, height = 20, units = "cm")
 
 
   ## Rango 2
-as_tibble(table(Rango2 = cubadata$rango2, Provincias = cubadata$provincia)) %>%
-  rename(n, Cantidad = n) %>% 
+rango.c2 <-as_tibble(table(Rango2 = cubadata$rango2, Provincias = cubadata$provincia)) %>%
+  rename(n, Cantidad = n) 
+
+rango.c2%>% 
   mutate(Rango2 = as_factor(Rango2), Provincias = as_factor(Provincias)) %>% 
   ggplot(aes(Provincias, Rango2, fill = Cantidad)) +
   geom_tile() +
+  geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")),color = ifelse(rango.c2$Cantidad < 50, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x="", y="Rango Etario",
        title="Casos:",
@@ -125,11 +131,14 @@ ggsave("figs/muertesedades.png", width = 30, height = 20, units = "cm")
 # Distribución de muertes por rangos etrios por Provincias
 
 ## Rango
-as_tibble(table(Rango = muertes$rango, Provincias = muertes$provincia)) %>%
-  rename(n, Cantidad = n) %>% 
+rango.m <- as_tibble(table(Rango = muertes$rango, Provincias = muertes$provincia)) %>%
+  rename(n, Cantidad = n) 
+
+rango.m %>% 
   mutate(Rango = as_factor(Rango), Provincias = as_factor(Provincias)) %>% 
   ggplot(aes(Provincias, Rango, fill = Cantidad)) +
   geom_tile() +
+  geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.m$Cantidad < 5, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x="", y="Rango Etario",
        title="Muertes:",
@@ -146,11 +155,14 @@ ggsave("figs/rangoedadesmuertes.png", width = 30, height = 20, units = "cm")
 
 
 ## Rango 2
-as_tibble(table(Rango = muertes$rango2, Provincias = muertes$provincia)) %>%
-  rename(n, Cantidad = n) %>% 
+rango.m2 <- as_tibble(table(Rango = muertes$rango2, Provincias = muertes$provincia)) %>%
+  rename(n, Cantidad = n) 
+
+rango.m2 %>% 
   mutate(Rango = as_factor(Rango), Provincias = as_factor(Provincias)) %>% 
   ggplot(aes(Provincias, Rango, fill = Cantidad)) +
   geom_tile() +
+  geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.m2$Cantidad < 5, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x="", y="Rango Etario",
        title="Muertes:",
@@ -161,11 +173,17 @@ as_tibble(table(Rango = muertes$rango2, Provincias = muertes$provincia)) %>%
        Enlace a fichero de datos: https://github.com/fr20587/covid19cu/blob/master/muertes.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() + 
-  theme(axis.text.x=element_text(angle=17, hjust = 1))
+  theme(axis.text.x=element_text(angle=17, hjust = 1), 
+        panel.grid = element_blank())
 
 ggsave("figs/rangoedades2muertes.png", width = 30, height = 20, units = "cm")
 
-# Analizando la edad media de muertes y su desviación estandar
+# Determinando la edad media de muertes y su desviación estandar
+
+edad.media.muertes <- mean(muertes$edad)
+desviación.estandar.edad.muertes <- sd(muertes$edad)
+
+# Resumiendo la cantidad de muertes por provincias
 
 edadesmuertes <- muertes %>% 
   group_by(edad, provincia) %>% 
@@ -173,7 +191,6 @@ edadesmuertes <- muertes %>%
             Cantidad = n()) %>% 
   arrange(provincia)
 
-## Por provincias
 edadesmuertes %>% ggplot(aes(x = Cantidad, y = Edad, color = provincia)) +
   geom_jitter(alpha = 0.3, show.legend = F) +
   labs(x = "Cantidad", y = "Edad",
@@ -188,4 +205,24 @@ edadesmuertes %>% ggplot(aes(x = Cantidad, y = Edad, color = provincia)) +
 
 ggsave("figs/dispersionedades.png", width = 20, height = 20, units = "cm")
 
-#probando control github
+# Representando la incidencia de los factores de riesgos en los fallecidos
+
+Factores %>% mutate(Factor.Riesgo = reorder(Factor.Riesgo, Total)) %>% 
+  ggplot(aes(x = Total, xend = 0,
+             y = Factor.Riesgo, yend = Factor.Riesgo,
+             colour = Factor.Riesgo)) +
+  geom_point(show.legend = F) +
+  geom_segment(show.legend = F) +
+  geom_text(aes(label = Total), show.legend = F, hjust = -1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(x = "", y = "",
+       title= "Factores de Riesgo en pacientes Fallecidos:",
+       caption= "''Factores con orden descendente de mayoner a menor incidencia''\n
+       Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
+       Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/muertes.xlsx\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme_ipsum() + 
+  theme(axis.text.x=element_text(angle=0, hjust = 1),
+        panel.grid.major.y = element_blank())
+  
+ggsave("figs/factores.riesgos.png", width = 30, height = 20, units = "cm")

@@ -2,20 +2,12 @@ library(tidyverse)
 library(readxl)
 muertes <- read_excel("data/muertes.xlsx")
 
-summary(muertes, na.rm = T)
-t(muertes)
-
 p <- t(select(muertes, -`Fecha de fallecimiento`, -`Fecha de detección`, -sexo, -edad, -Nacionalidad, -diasevolucion, -municipio, -provincia))
 
-colSums(p, na.rm = T)
+factor <- c(colnames(select(muertes, -`Fecha de fallecimiento`, -`Fecha de detección`, -sexo, -edad, -Nacionalidad, -diasevolucion, -municipio, -provincia)))
 
-b <- rowSums(p, na.rm = T)
-class(b)
+total <- c(rowSums(p, na.rm = T))
 
-b
-p
- table(b)
+Factores <- tibble(Factor.Riesgo = as.factor(factor), Total = total)
 
-c <- as_tibble(as.data.frame(p)) %>% mutate(total = rowSums(p, na.rm = T)) %>% select(total)
 
-  head(c)

@@ -11,6 +11,7 @@ act <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api
 muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_deaths_by_days.json"))
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
+poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 
 ## Manejo de los datos
 
@@ -61,9 +62,9 @@ casosprov <- casosprov %>% rename(Provincia = name)
 
 casosprov <- casosprov %>% rename(Población = population) 
 
-casosprov <- casosprov %>% mutate(Tasa= 10^5*Casos/Población)
+casosprov <- casosprov %>% mutate(`Tasa.10^5Hab`= 10^5*Casos/Población)
 
-casosprov %>% select(Provincia, Casos, Población, Tasa) %>% arrange(desc(Tasa))
+casosprov %>% select(Provincia, Casos, Población, `Tasa.10^5Hab`) %>% arrange(desc(`Tasa.10^5Hab`))
 
                                                         ### Trabajando con muertes ###
 muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
@@ -81,7 +82,7 @@ muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
                                            labels =c("0-9","10-19","20-29", "30-39","40-49", "50-59","60-69", "70-79","80-89",
                                                      "90-99", "100 o más")))
 
-  ### Creando Tabla de Factores de Reiesgos
+  ### Creando Tabla de Factores de Riesgos
 factor <- c(colnames(select(muertes, 
                             -`Fecha de fallecimiento`, 
                             -`Fecha de detección`, 
@@ -126,6 +127,15 @@ class.muertes <- muertes %>%  select(`Fecha de fallecimiento`, `Fecha de detecci
                                 "90-99", "100 o más")))
 
 
+                                          ## Creando recurso de población por municipio
+
+casosmun <-  count(cubadata, municipio)
+
+casospoblmun <- merge(poblacionmun, casosmun, by = "municipio", all = T)
+
+casospoblmun <- casospoblmun %>% 
+  mutate(`Tasa.10^5Hab` = round(n*10^5/poblacion, 2)) %>% 
+  arrange(desc(`Tasa.10^5Hab`))
 
 
 
@@ -136,6 +146,6 @@ save(casos, file = "rda/casos.rda")
 save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
 save(class.muertes, file = "rda/class.muertes.rda")
-
+save(casospoblmun, file = "rda/casospoblmun.rda")
 
 

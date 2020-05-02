@@ -207,7 +207,8 @@ ggsave("figs/dispersionedades.png", width = 20, height = 20, units = "cm")
 
 # Representando la incidencia de los factores de riesgos en los fallecidos
 
-Factores %>% mutate(Factor.Riesgo = reorder(Factor.Riesgo, Total)) %>% 
+Factores %>% filter(Total > 1) %>% 
+  mutate(Factor.Riesgo = reorder(Factor.Riesgo, Total)) %>% 
   ggplot(aes(x = Total, xend = 0,
              y = Factor.Riesgo, yend = Factor.Riesgo,
              colour = Factor.Riesgo)) +
@@ -216,8 +217,9 @@ Factores %>% mutate(Factor.Riesgo = reorder(Factor.Riesgo, Total)) %>%
   geom_text(aes(label = Total), show.legend = F, hjust = -1) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
   labs(x = "", y = "",
-       title= "Factores de Riesgo en pacientes Fallecidos:",
-       caption= "''Factores con orden descendente de mayoner a menor incidencia''\n
+       title = "Factores de Riesgo en Pacientes Fallecidos",
+       subtitle = "Datos filtrado para factores con más de una aparición",
+       caption = "''Factores con orden descendente de mayoner a menor incidencia''\n
        Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
        Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/muertes.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
@@ -252,4 +254,26 @@ count(class.muertes, clasificación) %>% mutate(clasificación = reorder(clasifi
 
 ggsave("figs/class.muertes.png", width = 30, height = 20, units = "cm")
 
+# Representando los municipios por tasa de incidencia por cien mil habitantes
 
+casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>% 
+  mutate(municipio = reorder(municipio, `Tasa.10^5Hab`)) %>% 
+  ggplot(aes(x = `Tasa.10^5Hab`, xend = 0,
+             y = municipio, yend = municipio,
+             color = municipio)) +
+  geom_point(show.legend = F) +
+  geom_segment(show.legend = F) +
+  geom_text(aes(label = `Tasa.10^5Hab`), show.legend = F, hjust = -1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(x = "Tasa por 10^5 Habitantes", y = "",
+       title = "Tasa de Incidencia de Casos por Municipios",
+       subtitle = "Datos de población por municipios obtenidos de la página web de la ONEI para el año 2018\n
+       Datos filtrados para municipos con una tasa mayor a 15",
+       caption = "Enlace a fichero de la ONEI: http://www.onei.gob.cu/sites/default/files/03series_0.rar\n
+       Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/poblacion.cuba.2018.onei.xlsx\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme_ipsum() + 
+  theme(axis.text.x=element_text(angle=0, hjust = 1),
+        panel.grid.major.y = element_blank())
+
+ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")

@@ -11,7 +11,7 @@ por el pais.
 Ante cualquier síntoma o malestar, ¡acuda al médico más cercano! y utilice la herramienta pesquisador virtual:
   http://autopesquisa.sld.cu/
 
-Información sobre los archivos
+Información sobre los archivos.
 El archivo muertes.xlsx fue creado a partir de la información publicada por el MINSAP en:
 
   https://salud.msp.gob.cu/
@@ -23,3 +23,9 @@ El archivo muertes.xlsx fue creado a partir de la información publicada por el 
 con el objetivo de realizar un análisis de los rangos etarios con maryor riesgo de muertes en Cuba en función de la evolución 
 de este indicador en el tiempo y segmentarlos por provincias. En él tambien podrán encontrar los factores de riesgos asociados a cada
 evento de muerte ocurrido. Las observaciones que se encuentren con datos en blanco son porque no se ha informado en la publicación oficial.
+
+El archivo poblacion.cuba.2018.onei.xlsx cuenta con la poblacion por municipios y su segmentacion por sexo, inforamción que fue publicada por la ONEI - Oficina Nacional de Estadísticas e Información de la República de Cuba para el año 2018 en su web oficial.
+
+http://www.onei.gob.cu
+
+

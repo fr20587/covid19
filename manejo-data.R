@@ -263,7 +263,7 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
              color = municipio)) +
   geom_point(show.legend = F) +
   geom_segment(show.legend = F) +
-  geom_text(aes(label = `Tasa.10^5Hab`), show.legend = F, hjust = -1) +
+  geom_text(aes(label = `Tasa.10^5Hab`), show.legend = F, hjust = -0.5) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
   labs(x = "Tasa por 10^5 Habitantes", y = "",
        title = "Tasa de Incidencia de Casos por Municipios",

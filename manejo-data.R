@@ -113,7 +113,7 @@ muertes %>%
   geom_text(x = 0, y = mean(muertes$edad), label = "Media   =", 
             hjust = -1, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
   geom_text(x = 0.8, y = mean(muertes$edad), label = round(mean(muertes$edad), 2), 
-            hjust = -1, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
+            hjust = -1.8, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
   labs(x="", y="Edad",
        title="Distribución Estadística de Muertes:",
        subtitle = "Edades vs Provincias\n

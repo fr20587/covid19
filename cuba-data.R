@@ -1,7 +1,17 @@
+## Cargando paquetes
+
 library(tidyverse)
 library(jsonlite)
 library(readxl)
+library(lubridate)
+library(ggrepel)
+library(ggforce)
+library(Cairo)
+library(magick)
+library(scales)
 
+## Creando recurso de logo para vizualizaciones
+logo_profdat <- "logo/logo.png"
 
 ## Lectura de los datos
 
@@ -12,6 +22,56 @@ muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/ap
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
+
+## Creando función para inserción de logo en las visualizaciones
+
+agregar_logo <- function(plot_path, logo_path, posicion_logo, logo_scale = 10){
+  if (!posicion_logo %in% c("superior derecha", "superior izquierda", "inferior derecha", "inferior izquierda")) {
+    stop("Error: Posición del Logo no reconocida\n  
+         Pruebe: logo_positon = 'superior derecha' 'superior izquierda' 'inferior derecha' 'inferior izquierda'")
+    }
+  
+  plot <- magick::image_read(plot_path)
+  logo_raw <- magick::image_read(logo_path)
+  
+  plot_height <- magick::image_info(plot)$height
+  plot_width <- magick::image_info(plot)$width
+  
+  logo <- magick::image_scale(logo_raw, as.character(plot_width/logo_scale))
+  
+  logo_width <- magick::image_info(logo)$width
+  logo_height <- magick::image_info(logo)$height
+  
+  if (posicion_logo == "superior derecha") {
+    x_pos = plot_width - logo_width - 0.02 * plot_width
+    y_pos = 0.045 * plot_height
+  } else if (posicion_logo == "inferior derecha") {
+    x_pos = 0.01 * plot_width
+    y_pos = 0.01 * plot_height
+  } else if (posicion_logo == "superior izquierda") {
+    x_pos = plot_width - logo_width - 0.02 * plot_width
+    y_pos = plot_height - logo_height - 0.02 * plot_height
+  } else if (posicion_logo == "inferior izquierda") {
+    x_pos = 0.01 * plot_width
+    y_pos = plot_height - logo_height - 0.02 * plot_height
+  }
+  
+  magick::image_composite(plot, logo, offset = paste0("+", x_pos, "+", y_pos))
+}
+
+### Expreción para guardar gráfico con logo
+
+##  plot_with_logo <- agregar_logo(
+##    plot_path = paste0(Sys.Date(), "_", short_name, "_peak-years.png"), # url or local file for the plot
+##    logo_path = logo_file_name, # url or local file for the logo
+##    logo_position = "top right", # choose a corner
+##    # 'top left', 'top right', 'bottom left' or 'bottom right'
+##    logo_scale = 7
+##  )
+
+# save the image and write to working directory
+## magick::image_write(plot_with_logo, paste0(Sys.Date(), "_", short_name, "_peak-years.png"))
+
 
 ## Manejo de los datos
 

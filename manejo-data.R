@@ -14,9 +14,7 @@ cubadata %>%
     geom_boxplot(show.legend = F) + 
     geom_jitter(aes(color = provincia, alpha = "0.01"),show.legend = F)  +
     geom_hline(yintercept=mean(cubadata$edad), color = "red", linetype ="dotted") +
-    geom_text(x = 0, y = mean(cubadata$edad), label = "Media   =", 
-            hjust = -1, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
-    geom_text(x = 1.25, y = mean(cubadata$edad), label = round(mean(cubadata$edad), 2), 
+    geom_text(x = 0, y = mean(cubadata$edad), label = paste0("Media = ", round(mean(cubadata$edad), 2)) , 
             hjust = -1, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
     labs(x="", y="Edad",
        title="Distribución Estadística de Casos:",
@@ -110,10 +108,12 @@ muertes %>%
   geom_boxplot(show.legend = F) + 
   geom_jitter(aes(color = provincia, alpha = "0.01"),show.legend = F)  +
   geom_hline(yintercept=mean(muertes$edad), color = "red", linetype ="dotted") +
-  geom_text(x = 0, y = mean(muertes$edad), label = "Media   =", 
-            hjust = -1, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
-  geom_text(x = 0.8, y = mean(muertes$edad), label = round(mean(muertes$edad), 2), 
-            hjust = -1.8, vjust = -0.5, colour = "red", size = 11 * 0.8 / .pt,) +
+  geom_text(x = 0, 
+            y = mean(muertes$edad), 
+            label = paste0("Media = ", round(mean(muertes$edad), 2)), 
+            hjust = -1, vjust = -0.5, 
+            colour = "red", size = 11 * 0.8 / .pt,
+            family = "URWGeometricW03-Light") +
   labs(x="", y="Edad",
        title="Distribución Estadística de Muertes:",
        subtitle = "Edades vs Provincias\n
@@ -263,7 +263,10 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
              color = municipio)) +
   geom_point(show.legend = F) +
   geom_segment(show.legend = F) +
-  geom_text(aes(label = `Tasa.10^5Hab`), show.legend = F, hjust = -0.5) +
+  geom_text(aes(label = `Tasa.10^5Hab`), 
+            show.legend = F, 
+            hjust = -0.5,
+            family = "URWGeometricW03-Light") +
   scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
   labs(x = "Tasa por 10^5 Habitantes", y = "",
        title = "Tasa de Incidencia de Casos por Municipios",
@@ -273,7 +276,27 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
        Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/poblacion.cuba.2018.onei.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() + 
-  theme(axis.text.x=element_text(angle=0, hjust = 1),
+  theme(axis.text.x = element_text(angle=0, hjust = 1),
+        axis.text.y = element_text(size = 10,
+                                    family = "Century Gothic"),
         panel.grid.major.y = element_blank())
 
+ggsave(paste0(Sys.Date(), "_tasamun.png"), 
+       height = 20,
+       width = 30,
+       units = "cm",
+       dpi = 600,
+       type = "cairo")
+
 ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")
+
+plot_con_logo <- agregar_logo(
+  plot_path = "figs/tasamun.png", # url or local file for the plot
+  logo_path = "logo/logo.png", # url or local file for the logo
+  posicion_logo = "superior derecha", # choose a corner: 'top left', 'top right', 'bottom left' or 'bottom right'
+  logo_scale = 15
+)
+
+magick::image_write(plot_con_logo, paste0(Sys.Date(), "_tasamun.png"))
+
+

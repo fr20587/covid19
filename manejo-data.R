@@ -256,7 +256,7 @@ ggsave("figs/class.muertes.png", width = 30, height = 20, units = "cm")
 
 # Representando los municipios por tasa de incidencia por cien mil habitantes
 
-casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>% 
+casospoblmun %>% filter(`Tasa.10^5Hab` > 20) %>% 
   mutate(municipio = reorder(municipio, `Tasa.10^5Hab`)) %>% 
   ggplot(aes(x = `Tasa.10^5Hab`, xend = 0,
              y = municipio, yend = municipio,
@@ -271,7 +271,7 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
   labs(x = "Tasa por 10^5 Habitantes", y = "",
        title = "Tasa de Incidencia de Casos por Municipios",
        subtitle = "Datos de población por municipios obtenidos de la página web de la ONEI para el año 2018\n
-       Datos filtrados para municipos con una tasa mayor a 15",
+       Datos filtrados para municipos con una tasa mayor a 20",
        caption = "Enlace a fichero de la ONEI: http://www.onei.gob.cu/sites/default/files/03series_0.rar\n
        Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/poblacion.cuba.2018.onei.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
@@ -281,27 +281,6 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
                                     family = "Century Gothic"),
         panel.grid.major.y = element_blank())
 
-ggsave(paste0(Sys.Date(), "_tasamun.png"), 
-       height = 20,
-       width = 30,
-       units = "cm",
-       dpi = 600,
-       type = "cairo")
-
 ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")
-
-plot_con_logo <- agregar_logo(
-  plot_path = "figs/tasamun.png", 
-  logo_path = "logo/logo.png", 
-  posicion_logo = "superior derecha", 
-  logo_scale = 15
-)
-
-magick::image_write(agregar_logo(
-                      plot_path = "figs/tasamun.png", 
-                      logo_path = "logo/logo.png", 
-                      posicion_logo = "superior derecha", 
-                      logo_scale = 15), 
-                    paste0(Sys.Date(), ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")))
 
 

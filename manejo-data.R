@@ -291,12 +291,17 @@ ggsave(paste0(Sys.Date(), "_tasamun.png"),
 ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")
 
 plot_con_logo <- agregar_logo(
-  plot_path = "figs/tasamun.png", # url or local file for the plot
-  logo_path = "logo/logo.png", # url or local file for the logo
-  posicion_logo = "superior derecha", # choose a corner: 'top left', 'top right', 'bottom left' or 'bottom right'
+  plot_path = "figs/tasamun.png", 
+  logo_path = "logo/logo.png", 
+  posicion_logo = "superior derecha", 
   logo_scale = 15
 )
 
-magick::image_write(plot_con_logo, paste0(Sys.Date(), "_tasamun.png"))
+magick::image_write(agregar_logo(
+                      plot_path = "figs/tasamun.png", 
+                      logo_path = "logo/logo.png", 
+                      posicion_logo = "superior derecha", 
+                      logo_scale = 15), 
+                    paste0(Sys.Date(), ggsave("figs/tasamun.png", width = 30, height = 20, units = "cm")))
 
 

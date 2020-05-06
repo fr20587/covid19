@@ -41,14 +41,14 @@ rango.c %>%
   ggplot(aes(Provincias, Rango, fill = Cantidad)) +
   geom_tile() +
   geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.c$Cantidad < 50, "black", "white"), size = 4) +
-  scale_fill_gradient(low="white", high="red") +
-  labs(x="", y="Rango Etario",
-       title="Casos:",
+  scale_fill_gradient(low = "white", high = "red") +
+  labs(x = "", y = "Rango Etario",
+       title = "Casos:",
        subtitle = "Rangos Etarios vs Provincias\n
        Distribución oficial del MINSAP",
-       caption="''Provincias ordenadas por orden alfabético''\n
+       caption = "''Provincias ordenadas por orden alfabético''\n
        Fuente de datos: https://covid19cubadata.github.io/#cuba\n
-       Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
+       Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/rda/casos.rda\n
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() + 
   theme(axis.text.x=element_text(angle=17, hjust = 1))
@@ -65,7 +65,7 @@ rango.c2%>%
   ggplot(aes(Provincias, Rango2, fill = Cantidad)) +
   geom_tile() +
   geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")),color = ifelse(rango.c2$Cantidad < 50, "black", "white"), size = 4) +
-  scale_fill_gradient(low="white", high="red") +
+  scale_fill_gradient(low="white", high="#053841") +
   labs(x="", y="Rango Etario",
        title="Casos:",
        subtitle = "Rangos Etarios vs Provincias\n

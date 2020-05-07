@@ -47,6 +47,7 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 15) %>%
 ## lineas de casos
 library(ggdark)
 library(ggthemes)
+library(gifski)
 
 image_
 
@@ -76,10 +77,10 @@ evo.animada <- (animate(casos %>%
         legend.key = element_blank()) +
   transition_reveal(casos$fecha) +
   ease_aes('linear'),
-  width = 480, height = 480, nframes = 360, fps = 50))
+  width = 690, height = 480, nframes = 360, fps = 50))
 
 
-image_write_gif(evo.animada, 'casos.evo.animada.gif')
+image_write_gif(evo.animada, "figs/casos.evo.animada.gif")
 
 
 

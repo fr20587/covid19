@@ -10,13 +10,14 @@ library(gganimate)
 library(Cairo)
 library(magick)
 library(scales)
+library(d3heatmap)
+library(hrbrthemes)
 
 ## Creando recurso de logo para vizualizaciones
 logo_profdat <- "logo/logo.png"
 
 ## Lectura de los datos
 
-covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
 cubadata <- read_csv(url("https://covid19cubadata.github.io/data/covid19-casos.csv"))
 casosprov <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/affected_provinces.json"))
 act <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json"))

@@ -50,10 +50,10 @@ library(ggthemes)
 
 image_
 
-(animate(casos %>% 
+evo.animada <- (animate(casos %>% 
   ggplot(aes(x = fecha)) + 
   geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
-  geom_label(aes(y = muertos, label = "M"), fill = "#EF233C") + 
+  geom_label(aes(y = muertos, label = "F"), fill = "#EF233C") + 
   geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
   geom_label(aes(y = recuperados, label = "R"), fill = "#6BAB90", size = 4) +
   geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
@@ -62,25 +62,27 @@ image_
   geom_label(aes(y = acumulados, label = "C"), fill = "#EE6C4D", size = 2,) +
   labs(x = "Fecha", y ="Cantidad de Casos",
             title = "Evolución de Casos por Variables:",
-            subtitle = "M - Muertos, R - Recuperados, A - Activos, C - Acumulados",
+            subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
             caption ="''Probando los paquetes: ggdark y gganimate''\n
        Fuente de datos: https://covid19cubadata.github.io/data/covid19-cuba.json\n
        Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() +
-  theme(plot.title = element_text(family = "Fira Sans Condensed"),
-        panel.background = element_blank(),
+  theme(panel.background = element_blank(),
         panel.grid.major = element_line(color = "grey30", size = 0.2),
         panel.grid.minor = element_line(color = "grey30", size = 0.2),
         legend.background = element_blank(),
         axis.ticks = element_blank(),
-        legend.key = element_blank(),
-        legend.position = c(0.815, 0.27)) +
-    
-    
+        legend.key = element_blank()) +
   transition_reveal(casos$fecha) +
   ease_aes('linear'),
   width = 480, height = 480, nframes = 360, fps = 50))
+
+
+image_write_gif(evo.animada, 'casos.evo.animada.gif')
+
+
+
 
 legend(x = "toplesft", 
        legend = c("Muertos", "Recuperados", "Activos", "Acumulados"), 
@@ -90,13 +92,7 @@ legend(x = "toplesft",
 
 
 
-
-
-
-
-
-
-
+   
 
 
 

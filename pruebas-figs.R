@@ -62,10 +62,10 @@ evo.animada <- (animate(casos %>%
   geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
   geom_label(aes(y = acumulados, label = "C"), fill = "#EE6C4D", size = 2,) +
   labs(x = "Fecha", y ="Cantidad de Casos",
-            title = "Evolución de Casos por Variables:",
+            title = paste0("Evolución de Casos por Variables - ", 
+                           "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
             subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
-            caption ="''Probando los paquetes: ggdark y gganimate''\n
-       Fuente de datos: https://covid19cubadata.github.io/data/covid19-cuba.json\n
+            caption ="Fuente de datos: https://covid19cubadata.github.io\n
        Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() +
@@ -77,23 +77,33 @@ evo.animada <- (animate(casos %>%
         legend.key = element_blank()) +
   transition_reveal(casos$fecha) +
   ease_aes('linear'),
-  width = 690, height = 480, nframes = 360, fps = 50))
+  width = 900, height = 506, nframes = 560, fps = 50))
 
 
-image_write_gif(evo.animada, "figs/casos.evo.animada.gif")
+casos %>% 
+          ggplot(aes(x = fecha)) + 
+          geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
+          
+          geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
+          
+          geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
+          
+          geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
+          
+          labs(x = "Fecha", y ="Cantidad de Casos",
+               title = paste0("Evolución de Casos por Variables\n ", 
+                              "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+               subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
+               caption ="Fuente de datos: https://covid19cubadata.github.io\n
+       Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
+       Gráfico realizado por: Frank Rodríguez López") +
+          theme_ipsum() +
+          theme(panel.background = element_blank(),
+                panel.grid.major = element_line(color = "grey30", size = 0.2),
+                panel.grid.minor = element_line(color = "grey30", size = 0.2),
+                legend.background = element_blank(),
+                axis.ticks = element_blank(),
+                legend.key = element_blank())
 
-
-
-
-legend(x = "toplesft", 
-       legend = c("Muertos", "Recuperados", "Activos", "Acumulados"), 
-       fill = c("EF233C", "E0FBFC", "3D5A80", "EE6C4D"), 
-       title = "Variables")
-
-
-
-
-   
-
-
+ggsave("figs/casos.evo.png", width = 30, height = 20, units = "cm")
 

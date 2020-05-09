@@ -49,18 +49,16 @@ library(ggdark)
 library(ggthemes)
 library(gifski)
 
-image_
-
 evo.animada <- (animate(casos %>% 
   ggplot(aes(x = fecha)) + 
   geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
-  geom_label(aes(y = muertos, label = "F"), fill = "#EF233C") + 
+  geom_label(aes(y = muertos, label = "F"), fill = "#EF233C", size = 4, alpha = 0.5, fill = "white") + 
   geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
-  geom_label(aes(y = recuperados, label = "R"), fill = "#6BAB90", size = 4) +
+  geom_label(aes(y = recuperados, label = "R"), fill = "#6BAB90", size = 4, alpha = 0.5, fill = "white") +
   geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
-  geom_label(aes(y = activos, label = "A"), fill = "#ECC30B", size = 3,) +
+  geom_label(aes(y = activos, label = "A"), fill = "#ECC30B", size = 4, alpha = 0.5, fill = "white") +
   geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
-  geom_label(aes(y = acumulados, label = "C"), fill = "#EE6C4D", size = 2,) +
+  geom_label(aes(y = acumulados, label = "C"), fill = "#EE6C4D", size = 4, alpha = 0.5, fill = "white") +
   labs(x = "Fecha", y ="Cantidad de Casos",
             title = paste0("Evolución de Casos por Variables - ", 
                            "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
@@ -80,30 +78,55 @@ evo.animada <- (animate(casos %>%
   width = 900, height = 506, nframes = 560, fps = 50))
 
 
-casos %>% 
-          ggplot(aes(x = fecha)) + 
-          geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
-          
-          geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
-          
-          geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
-          
-          geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
-          
-          labs(x = "Fecha", y ="Cantidad de Casos",
-               title = paste0("Evolución de Casos por Variables\n ", 
-                              "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-               subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
-               caption ="Fuente de datos: https://covid19cubadata.github.io\n
-       Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
-       Gráfico realizado por: Frank Rodríguez López") +
-          theme_ipsum() +
-          theme(panel.background = element_blank(),
-                panel.grid.major = element_line(color = "grey30", size = 0.2),
-                panel.grid.minor = element_line(color = "grey30", size = 0.2),
-                legend.background = element_blank(),
-                axis.ticks = element_blank(),
-                legend.key = element_blank())
 
-ggsave("figs/casos.evo.png", width = 30, height = 20, units = "cm")
+casos %>% 
+  ggplot(aes(x = fecha)) +
+    geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
+    geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
+    geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
+    geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
+    labs(x = "Fecha", y ="Cantidad de Casos",
+         title = paste0("Evolución de Casos por Variables\n", 
+          "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+          subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
+          caption ="Fuente de datos: https://covid19cubadata.github.io\n
+          Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
+          Gráfico realizado por: Frank Rodríguez López") +
+    dark_mode(theme_fivethirtyeight()) +
+    theme(panel.background = element_blank(),
+          panel.grid.major = element_line(color = "grey30", size = 0.2),
+          panel.grid.minor = element_line(color = "grey30", size = 0.2),
+          legend.background = element_blank(),
+          axis.ticks = element_blank(),
+          legend.key = element_blank())
+
+ggsave("figs/casos.evo.n.png", width = 30, height = 20, units = "cm")
+
+evo.animada.n <- (animate(casos %>% 
+                          ggplot(aes(x = fecha)) + 
+                          geom_line(aes(y = muertos), color = "#EF233C", size = 1.5, alpha = 0.5) +
+                          geom_label(aes(y = muertos, label = "F"), fill = "#EF233C", size = 4, alpha = 0.5, fill = "white") + 
+                          geom_line(aes(y = recuperados), color = "#6BAB90", size = 1.5, alpha = 0.5) +
+                          geom_label(aes(y = recuperados, label = "R"), fill = "#6BAB90", size = 4, alpha = 0.5, fill = "white") +
+                          geom_line(aes(y = activos), color = "#ECC30B", size = 1.5, alpha = 0.5) +
+                          geom_label(aes(y = activos, label = "A"), fill = "#ECC30B", size = 4, alpha = 0.5, fill = "white") +
+                          geom_line(aes(y = acumulados), color = "#EE6C4D", size = 1.5, alpha = 0.5) +
+                          geom_label(aes(y = acumulados, label = "C"), fill = "#EE6C4D", size = 4, alpha = 0.5, fill = "white") +
+                          labs(x = "Fecha", y ="Cantidad de Casos",
+                               title = paste0("Evolución de Casos por Variables - ", 
+                                              "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+                               subtitle = "F - Fallecidos, R - Recuperados, A - Activos, C - Acumulados",
+                               caption ="Fuente de datos: https://covid19cubadata.github.io\n
+                                Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
+                                Gráfico realizado por: Frank Rodríguez López") +
+                          dark_mode(theme_fivethirtyeight()) +
+                          theme(panel.background = element_blank(),
+                                panel.grid.major = element_line(color = "grey30", size = 0.2),
+                                panel.grid.minor = element_line(color = "grey30", size = 0.2),
+                                legend.background = element_blank(),
+                                axis.ticks = element_blank(),
+                                legend.key = element_blank()) +
+                          transition_reveal(casos$fecha) +
+                          ease_aes('linear'),
+                          width = 900, height = 506, nframes = 560, fps = 50))
 

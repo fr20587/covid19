@@ -12,6 +12,7 @@ library(magick)
 library(scales)
 library(d3heatmap)
 library(hrbrthemes)
+library(ggdark)
 
 ## Creando recurso de logo para vizualizaciones
 logo_profdat <- "logo/logo.png"

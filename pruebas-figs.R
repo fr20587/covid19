@@ -129,4 +129,3 @@ evo.animada.n <- (animate(casos %>%
                           transition_reveal(casos$fecha) +
                           ease_aes('linear'),
                           width = 900, height = 506, nframes = 560, fps = 50))
-

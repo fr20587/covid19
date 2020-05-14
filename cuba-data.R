@@ -26,6 +26,7 @@ muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/ap
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
+#covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
 
 ## Creando función para inserción de logo en las visualizaciones
 

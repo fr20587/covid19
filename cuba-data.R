@@ -26,6 +26,8 @@ muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/ap
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
+poblacion.mundial <- read_excel("data/poblacion.mundial.2018.world.bank.xlsx")
+#casos.mundo <- read_excel(url("https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx"))
 
 ## Creando función para inserción de logo en las visualizaciones
 
@@ -201,7 +203,15 @@ casospoblmun <- casospoblmun %>%
   mutate(`Tasa.10^5Hab` = round(n*10^5/poblacion, 2)) %>% 
   arrange(desc(`Tasa.10^5Hab`))
 
+## Trabajando con poblacion.mundial
 
+poblacion.mundial <- poblacion.mundial %>% 
+  select(`Country Name`, `Country Code`, `2018`) %>% 
+  rename(pais = `Country Name`, 
+         codigo = `Country Code`,
+         poblacion.p = `2018`) %>% 
+  mutate(pais = as.factor(pais),
+         codigo = as.factor(codigo))
 
 ## Salva de los datos para su análisis
 
@@ -211,5 +221,6 @@ save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
 save(class.muertes, file = "rda/class.muertes.rda")
 save(casospoblmun, file = "rda/casospoblmun.rda")
+save(poblacion.mundial, file = "rda/poblacion.mundial.rda")
 
 

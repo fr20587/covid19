@@ -206,7 +206,76 @@ casospoblmun <- casospoblmun %>%
   mutate(`Tasa.10^5Hab` = round(n*10^5/poblacion, 2)) %>% 
   arrange(desc(`Tasa.10^5Hab`))
 
+                                          ## Creando recurso de casos Cuba vs TOP10
 
+casos.top.10.cu <- casos.ecdc %>% 
+  filter(geoId %in% c("CU", "US", "ES", "RU", "UK", "IT", "BR", "FR", "DE", "TR", "IR")) %>%
+  filter(cases > 0) %>% 
+  arrange(dateRep) %>% 
+  arrange(geoId)
+
+casos.cu <- casos.top.10.cu %>% filter(geoId == "CU") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.cu$geoId[casos.cu$geoId == "CU"] <- "cu"
+
+casos.us <- casos.top.10.cu %>% filter(geoId == "US") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.us$geoId[casos.us$geoId == "US"] <- "us"
+
+casos.es <- casos.top.10.cu %>% filter(geoId == "ES") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.es$geoId[casos.es$geoId == "ES"] <- "es"
+
+casos.ru <- casos.top.10.cu %>% filter(geoId == "RU") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.ru$geoId[casos.ru$geoId == "RU"] <- "ru"
+
+casos.uk <- casos.top.10.cu %>% filter(geoId == "UK") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.uk$geoId[casos.uk$geoId == "UK"] <- "gb"
+
+casos.it <- casos.top.10.cu %>% filter(geoId == "IT") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.it$geoId[casos.it$geoId == "IT"] <- "it"
+
+casos.br <- casos.top.10.cu %>% filter(geoId == "BR") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.br$geoId[casos.br$geoId == "BR"] <- "br"
+
+casos.fr <- casos.top.10.cu %>% filter(geoId == "FR") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.fr$geoId[casos.fr$geoId == "FR"] <- "fr"
+
+casos.tr <- casos.top.10.cu %>% filter(geoId == "TR") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.tr$geoId[casos.tr$geoId == "TR"] <- "tr"
+
+casos.ir <- casos.top.10.cu %>% filter(geoId == "IR") %>% 
+  mutate(casos.acum = cumsum(cases)) %>%
+  mutate(dia = rownames(.))
+
+casos.ir$geoId[casos.ir$geoId == "IR"] <- "ir"
+
+casos.top.10.cu <- rbind(casos.cu, casos.us, casos.es, casos.ru, casos.uk, casos.it, casos.br, casos.fr, casos.tr, casos.ir) %>% 
+  mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2018)
 
 ## Salva de los datos para su análisis
 
@@ -216,5 +285,5 @@ save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
 save(class.muertes, file = "rda/class.muertes.rda")
 save(casospoblmun, file = "rda/casospoblmun.rda")
-
+save(casos.top.10.cu, file = "rda/casos.top.10.cu")
 

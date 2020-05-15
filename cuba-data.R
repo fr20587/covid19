@@ -13,6 +13,8 @@ library(scales)
 library(d3heatmap)
 library(hrbrthemes)
 library(ggdark)
+library(ggflags)
+library(gifski)
 
 ## Creando recurso de logo para vizualizaciones
 logo_profdat <- "logo/logo.png"
@@ -27,8 +29,10 @@ rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-
-## Creando función para inserción de logo en las visualizaciones
+casos.ecdc <- read_excel("C:/Users/frankr/Downloads/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx", 
+                         col_types = c("date", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "numeric", "text"))
+ 
+ ## Creando función para inserción de logo en las visualizaciones
 
 agregar_logo <- function(plot_path, logo_path, posicion_logo, logo_scale = 10){
   if (!posicion_logo %in% c("superior derecha", "superior izquierda", "inferior derecha", "inferior izquierda")) {

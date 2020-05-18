@@ -25,13 +25,14 @@ cubadata <- read_csv(url("https://covid19cubadata.github.io/data/covid19-casos.c
 casosprov <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/affected_provinces.json"))
 act <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json"))
 muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_deaths_by_days.json"))
+fallecidos <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-fallecidos.json"))
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-casos.ecdc <- read_excel("C:/Users/frankr/Downloads/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx", 
-                         col_types = c("date", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "numeric", "text"))
- 
+casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
+
+         
  ## Creando función para inserción de logo en las visualizaciones
 
 agregar_logo <- function(plot_path, logo_path, posicion_logo, logo_scale = 10){
@@ -285,5 +286,5 @@ save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
 save(class.muertes, file = "rda/class.muertes.rda")
 save(casospoblmun, file = "rda/casospoblmun.rda")
-save(casos.top.10.cu, file = "rda/casos.top.10.cu")
-
+save(casos.top.10.cu, file = "rda/casos.top.10.cu.rda")
+save(casos.ecdc, file = "rda/casos.ecdc.rda")

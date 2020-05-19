@@ -9,7 +9,7 @@ casos.top.10.cu.anim <- casos.top.10.cu  %>%
   labs(x = "Fecha", y ="Cantidad de Casos",
        title = paste0("Evolución de Casos\n TOP-10 Paises más Cuba - ",
                       "Datos cierre: ", 
-                      format(Sys.Date(), "%A, %d de %B de %Y"),"\n Fecha: {} frame_time"),
+                      format(Sys.Date(), "%A, %d de %B de %Y")),
        caption ="Fuente de datos: Centro europeo para la prevención y el control de enfermedades\n
        Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +

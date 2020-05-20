@@ -195,9 +195,7 @@ class.muertes <- muertes %>%  select(`Fecha de fallecimiento`, `Fecha de detecci
 
                                           ## Creando recurso de población por municipio
 
-casosmun <- as.tibble(count(cubadata$municipio)) %>% 
-  mutate(municipio = x, n = freq) %>% 
-  select(municipio, n)
+casosmun <- as.tibble(count(cubadata, municipio))
 
 casospoblmun <- merge(poblacionmun, casosmun, by = "municipio", all = T)
 

@@ -348,3 +348,21 @@ image_write_gif(animate(`tasa.10^5.top.10.cu.anim.n`,
                         fps = 50, 
                         renderer=magick_renderer()), 
                 "figs/`tasa.10^5.top.10.cu.anim.n`.gif")
+
+## Animando Rango de casos por provincias
+
+rango.c2%>% 
+  mutate(Rango2 = as_factor(Rango2), Provincias = as_factor(Provincias)) %>% 
+  ggplot(aes(Provincias, Rango2, fill = Cantidad)) +
+  geom_tile() +
+  geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")),color = ifelse(rango.c2$Cantidad < 50, "black", "white"), size = 4) +
+  scale_fill_gradient(low="white", high="#053841") +
+  labs(x = "", y = "Rango Etario",
+       title = paste0("Casos - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = "Rangos Etarios vs Provincias - Rangos Etarios por Decenio",
+       caption = "''Provincias ordenadas por orden alfabético''\n
+       Fuente de datos: https://covid19cubadata.github.io/#cuba\n
+       Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme_ipsum() + 
+  theme(axis.text.x = element_text(angle=17, hjust = 1))

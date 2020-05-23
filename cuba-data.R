@@ -25,13 +25,14 @@ cubadata <- read_csv(url("https://covid19cubadata.github.io/data/covid19-casos.c
 casosprov <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/affected_provinces.json"))
 act <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json"))
 muer <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_deaths_by_days.json"))
+fallecidos <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-fallecidos.json"))
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-casos.ecdc <- read_excel("C:/Users/frankr/Downloads/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx", 
-                         col_types = c("date", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "numeric", "text"))
- 
+#casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
+
+         
  ## Creando función para inserción de logo en las visualizaciones
 
 agregar_logo <- function(plot_path, logo_path, posicion_logo, logo_scale = 10){
@@ -125,15 +126,11 @@ casos <- tibble(fecha, nuevos, activos, acumulados, recuperados, muertos) %>%
 
                                                         ### Trabajando con casosprov ###
 
-casosprov <- casosprov %>% rename(Casos = value)
-
-casosprov <- casosprov %>% rename(Provincia = name)
-
-casosprov <- casosprov %>% rename(Población = population) 
-
-casosprov <- casosprov %>% mutate(`Tasa.10^5Hab`= 10^5*Casos/Población)
-
-casosprov %>% select(Provincia, Casos, Población, `Tasa.10^5Hab`) %>% arrange(desc(`Tasa.10^5Hab`))
+casosprov <- casosprov %>% mutate(Casos = value,
+                                  Provincia = name,
+                                  Población = population,
+                                  `Tasa.10^5Hab`= 10^5*Casos/Población) %>% 
+  select(Provincia, Casos, Población, `Tasa.10^5Hab`) %>% arrange(desc(`Tasa.10^5Hab`))
 
                                                         ### Trabajando con muertes ###
 muertes <- muertes %>% mutate(FechaF = as.Date(`Fecha de fallecimiento`),
@@ -198,7 +195,7 @@ class.muertes <- muertes %>%  select(`Fecha de fallecimiento`, `Fecha de detecci
 
                                           ## Creando recurso de población por municipio
 
-casosmun <-  count(cubadata, municipio)
+casosmun <- as.tibble(count(cubadata, municipio))
 
 casospoblmun <- merge(poblacionmun, casosmun, by = "municipio", all = T)
 
@@ -216,63 +213,55 @@ casos.top.10.cu <- casos.ecdc %>%
 
 casos.cu <- casos.top.10.cu %>% filter(geoId == "CU") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "CU", "cu", ""))
 
 casos.cu$geoId[casos.cu$geoId == "CU"] <- "cu"
 
 casos.us <- casos.top.10.cu %>% filter(geoId == "US") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.us$geoId[casos.us$geoId == "US"] <- "us"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "US", "us", ""))
 
 casos.es <- casos.top.10.cu %>% filter(geoId == "ES") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.es$geoId[casos.es$geoId == "ES"] <- "es"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "ES", "es", ""))
 
 casos.ru <- casos.top.10.cu %>% filter(geoId == "RU") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.ru$geoId[casos.ru$geoId == "RU"] <- "ru"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "RU", "ru", ""))
 
 casos.uk <- casos.top.10.cu %>% filter(geoId == "UK") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.uk$geoId[casos.uk$geoId == "UK"] <- "gb"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "UK", "gb", ""))
 
 casos.it <- casos.top.10.cu %>% filter(geoId == "IT") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.it$geoId[casos.it$geoId == "IT"] <- "it"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "IT", "it", ""))
 
 casos.br <- casos.top.10.cu %>% filter(geoId == "BR") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.br$geoId[casos.br$geoId == "BR"] <- "br"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "BR", "br", ""))
 
 casos.fr <- casos.top.10.cu %>% filter(geoId == "FR") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.fr$geoId[casos.fr$geoId == "FR"] <- "fr"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "FR", "fr", ""))
 
 casos.tr <- casos.top.10.cu %>% filter(geoId == "TR") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.tr$geoId[casos.tr$geoId == "TR"] <- "tr"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "TR", "tr", ""))
 
 casos.ir <- casos.top.10.cu %>% filter(geoId == "IR") %>% 
   mutate(casos.acum = cumsum(cases)) %>%
-  mutate(dia = rownames(.))
-
-casos.ir$geoId[casos.ir$geoId == "IR"] <- "ir"
+  mutate(dia = rownames(.)) %>% 
+  mutate(geoId = ifelse(geoId == "IR", "ir", ""))
 
 casos.top.10.cu <- rbind(casos.cu, casos.us, casos.es, casos.ru, casos.uk, casos.it, casos.br, casos.fr, casos.tr, casos.ir) %>% 
   mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2018)
@@ -285,5 +274,8 @@ save(casosprov, file = "rda/casosprov.rda")
 save(Factores, file = "rda/factores.riesgos.rda")
 save(class.muertes, file = "rda/class.muertes.rda")
 save(casospoblmun, file = "rda/casospoblmun.rda")
-save(casos.top.10.cu, file = "rda/casos.top.10.cu")
+save(casos.top.10.cu, file = "rda/casos.top.10.cu.rda")
+save(casos.ecdc, file = "rda/casos.ecdc.rda")
 
+write_json(rango.c2, "data/casos.rango.json")
+write_json(casosprov, "data/casosprov.json")

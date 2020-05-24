@@ -131,7 +131,7 @@ muertes %>%
             colour = "red", size = 11 * 0.8 / .pt,
             family = "URWGeometricW03-Light") +
   labs(x = "", y = "Edad",
-       title = paste0("Distribución Estadística de Muertes - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       title = paste0("Distribución Estadística de Fallecidos - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
        subtitle = "Edades vs Provincias\n
        NA: provincias no informada en la publicación oficial",
        caption = "''Provincias ordenadas por media de edad''\n 
@@ -157,7 +157,7 @@ rango.m %>%
   geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.m$Cantidad < 5, "black", "white"), size = 4) +
   scale_fill_gradient(low = "white", high = "red") +
   labs(x = "", y = "Rango Etario",
-       title = paste0("Muertes - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       title = paste0("Fallecidos - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
        subtitle = "Rangos Etarios vs Provincias - Distribución de Rangos Etarios oficial del MINSAP",
        caption = "''Provincias ordenadas por orden alfabético''\n
        Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
@@ -180,7 +180,7 @@ rango.m2 %>%
   geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.m2$Cantidad < 5, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x = "", y = "Rango Etario",
-       title = paste0("Muertes - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       title = paste0("Fallecidos - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
        subtitle = "Rangos Etarios vs Provincias - Rangos Etarios por Decenio",
        caption = "''Provincias ordenadas por orden alfabético''\n
        Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
@@ -204,7 +204,7 @@ rango.m2.mun %>%
   geom_text(aes(label = ifelse(Cantidad > 0, Cantidad, " ")), color = ifelse(rango.m2.mun$Cantidad < 4, "black", "white"), size = 4) +
   scale_fill_gradient(low="white", high="red") +
   labs(x = "", y = "Rango Etario",
-       title = paste0("Muertes - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       title = paste0("Fallecidos - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
        subtitle = "Rangos Etarios vs Municipios - Rangos Etarios por Decenios",
        caption = "''Municipios ordenados por orden alfabético'' - Fuente de datos: Reportes oficiales publicados en la página web del MINSAP - Enlace a fichero de datos: https://github.com/fr20587/covid19cu/blob/master/muertes.xlsx - Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() + 
@@ -230,8 +230,8 @@ edadesmuertes <- muertes %>%
 edadesmuertes %>% ggplot(aes(x = Cantidad, y = Edad, color = provincia)) +
   geom_jitter(alpha = 0.3, show.legend = F) +
   labs(x = "Cantidad", y = "Edad",
-       title = paste0("Dispersión de Muertes \n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-       subtitle = "Cantidad de Muertes vs Edad\n
+       title = paste0("Dispersión de Fallecidos \n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = "Cantidad de Fallecidos vs Edad\n
        NA: provincias no informada en la publicación oficial",
        caption = "Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
        Enlace a fichero de datos: https://github.com/fr20587/covid19cu/blob/master/muertes.xlsx\n

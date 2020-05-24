@@ -30,7 +30,7 @@ rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-#casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
+casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
 
          
  ## Creando función para inserción de logo en las visualizaciones
@@ -277,5 +277,12 @@ save(casospoblmun, file = "rda/casospoblmun.rda")
 save(casos.top.10.cu, file = "rda/casos.top.10.cu.rda")
 save(casos.ecdc, file = "rda/casos.ecdc.rda")
 
+write_json(cubadata, "data/cubadata.json")
+write_json(casos, "data/casos.json")
 write_json(rango.c2, "data/casos.rango.json")
 write_json(casosprov, "data/casosprov.json")
+write_json(Factores, "data/factores.riesgos.json")
+write_json(class.muertes, "data/class.muertes.json")
+write_json(casospoblmun, "data/casospoblmun.json")
+write_json(casos.top.10.cu, "data/casos.top.10.cu.json")
+write_json(casos.ecdc, "data/casos.ecdc.json")

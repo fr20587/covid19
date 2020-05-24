@@ -78,6 +78,17 @@ evo.animada <- (animate(casos %>%
   width = 900, height = 506, nframes = 560, fps = 50))
 
 
+##TREEMAP
+
+ggplot(casos.prov.mun, aes(area = casos, fill = casos, 
+                           label = municipio, subgroup = provincia, 
+                           subgroup2 = municipio)) +
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre",
+                    grow = TRUE) +
+  geom_treemap_subgroup_border(color = "black", size = 3) + 
+  geom_treemap_subgroup2_border(color = "green", size = 3)
+
 
 casos %>% 
   ggplot(aes(x = fecha)) +

@@ -29,6 +29,7 @@ fallecidos <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-falle
 rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_recovered_by_days.json"))
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
+distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.provincia.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
 casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
 
@@ -266,6 +267,12 @@ casos.ir <- casos.top.10.cu %>% filter(geoId == "IR") %>%
 casos.top.10.cu <- rbind(casos.cu, casos.us, casos.es, casos.ru, casos.uk, casos.it, casos.br, casos.fr, casos.tr, casos.ir) %>% 
   mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2018)
 
+## Creando data frame con casos por municipios y provincias
+casos.prov.mun <- as.tibble(left_join(distribucion.municipios.provincia, casosmun, by = "municipio")) %>% 
+  rename(casos = n) 
+
+casos.prov.mun$casos[is.na(casos.prov.mun$casos)] <- 0
+
 ## Salva de los datos para su análisis
 
 save(cubadata, file = "rda/cubadata.rda")
@@ -286,3 +293,4 @@ write_json(class.muertes, "data/class.muertes.json")
 write_json(casospoblmun, "data/casospoblmun.json")
 write_json(casos.top.10.cu, "data/casos.top.10.cu.json")
 write_json(casos.ecdc, "data/casos.ecdc.json")
+write_json(casos.prov.mun, "data/casos.prov.mun.json")

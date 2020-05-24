@@ -318,5 +318,3 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 20) %>%
         panel.grid.major.y = element_blank())
 
 ggsave("figs/muer.tasa.mun.png", width = 30, height = 20, units = "cm")
-
-

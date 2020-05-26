@@ -31,7 +31,7 @@ muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.provincia.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-casos.ecdc <- as.tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
+#casos.ecdc <- as_tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
 
          
  ## Creando función para inserción de logo en las visualizaciones
@@ -268,7 +268,7 @@ casos.top.10.cu <- rbind(casos.cu, casos.us, casos.es, casos.ru, casos.uk, casos
   mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2018)
 
 ## Creando data frame con casos por municipios y provincias
-casos.prov.mun <- as.tibble(left_join(distribucion.municipios.provincia, casosmun, by = "municipio")) %>% 
+casos.prov.mun <- as_tibble(left_join(distribucion.municipios.provincia, casosmun, by = "municipio")) %>% 
   rename(casos = n) 
 
 casos.prov.mun$casos[is.na(casos.prov.mun$casos)] <- 0

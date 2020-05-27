@@ -377,3 +377,11 @@ rango.c2%>%
        Gráfico realizado por: Frank Rodríguez López") +
   theme_ipsum() + 
   theme(axis.text.x = element_text(angle=17, hjust = 1))
+
+
+## Programando auto ejecución de scripts con taskscheduleR
+library(taskscheduleR)
+
+taskscheduler_create(taskname = "actualización.COVID-19", rscript = "cuba-data.R",
+                     schedule = "DAILY", starttime = "12:00", startdate = format(Sys.Date(), "%d/%m/%Y"))
+

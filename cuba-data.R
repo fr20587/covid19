@@ -31,7 +31,10 @@ muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.provincia.xlsx")
 #covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
-#casos.ecdc <- as_tibble(read.csv(url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"), na.strings = "", fileEncoding = "UTF-8-BOM")) %>% mutate(dateRep = dmy(dateRep))
+
+# Importacion de información internacional de la base de datos de ECDC
+url <- url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
+casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
 
          
  ## Creando función para inserción de logo en las visualizaciones

@@ -385,3 +385,20 @@ library(taskscheduleR)
 taskscheduler_create(taskname = "actualización.COVID-19", rscript = "cuba-data.R",
                      schedule = "DAILY", starttime = "12:00", startdate = format(Sys.Date(), "%d/%m/%Y"))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

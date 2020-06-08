@@ -386,19 +386,44 @@ taskscheduler_create(taskname = "actualización.COVID-19", rscript = "cuba-data.
                      schedule = "DAILY", starttime = "12:00", startdate = format(Sys.Date(), "%d/%m/%Y"))
 
 
+## Creando gráfica log/log nuevos casos vs casos totales
+
+casos.top.10.cu %>% filter(geoId %in% c("cu"), dateRep >= max(dateRep -7)) %>% 
+  ggplot(aes(casos.acum, cases)) + 
+    geom_line(aes(color = geoId)) + 
+    geom_abline() +
+    scale_x_log10() +
+    scale_y_log10() + 
+    theme_ipsum()
+
+
+casos.cu7 <- casos.top.10.cu %>% 
+  filter(geoId == "cu") %>% 
+  mutate(casos.acum.sem = cumsum(cases)) %>% 
+  mutate(dia = rownames(.))
+
+sumif
+
+  mutate(geoId = ifelse(geoId == "CU", "cu", ""))
+
+casos.top.10.cu <- casos.top.10.cu %>% 
+  mutate(dia.sem = wday(casos.top.10.cu$dateRep),
+         num.sem = week(casos.top.10.cu$dateRep))
+
+ 
+   summarise(cases)
+
+
+td <- (t * log(2)) / (log(cases/(cases - 7)))
+
+mean((7 * log(2,10)) / ((log2(casos.top.10.cu$cases)/ log2(casos.top.10.cu$casos.acum))))
 
 
 
+fm <- lm(log2(casos.top.10.cu$casos.acum) ~ casos.top.10.cu$dateRep, casos.top.10.cu)
 
+doubling.time <- 1/coef(fm)[[2]]
 
-
-
-
-
-
-
-
-
-
-
+pl
+casos.top.10.cu %>% filter(dateRep >= max(dateRep -7))
 

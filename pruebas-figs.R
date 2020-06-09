@@ -427,3 +427,157 @@ doubling.time <- 1/coef(fm)[[2]]
 pl
 casos.top.10.cu %>% filter(dateRep >= max(dateRep -7))
 
+
+## Función para calcular duplicación de casos
+
+casos.prov.tiempo <- 
+  count(cubadata, fecha_confirmacion, provincia) %>% 
+    rename(casos = n)
+  
+casos.doble.tiempo <-
+  casos.prov.tiempo %>% 
+  mutate(fecha_confirmacion = fecha_confirmacion + 1) %>%
+  mutate(tiempo.espera = lead(fecha_confirmacion),
+         n.doble = floor(log(casos, 2) - log(min(casos), 2))) %>% 
+  group_by(provincia, n.doble) %>% 
+  mutate(dias.a.doble = as.numeric(max(tiempo.espera) - min(tiempo.espera),
+                                   units = "days")) %>% 
+  ungroup() %>% 
+  group_by(provincia) %>% 
+  mutate(doble.factor = min(casos) * 2^n.doble) %>% 
+  group_by(provincia, n.doble) 
+
+
+  summarise(dias.a.doble = max(dias.a.doble), 
+            casos = min(casos),
+            doble.factor = min(doble.factor)) %>% 
+  drop_na(dias.a.doble) %>% 
+  ungroup()
+  
+casos.art <- casos.prov.tiempo %>% 
+  filter(provincia == "Artemisa") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cmg <- casos.prov.tiempo %>% 
+  filter(provincia == "Camagüey") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cav <- casos.prov.tiempo %>% 
+  filter(provincia == "Ciego de Ávila") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cfg <- casos.prov.tiempo %>% 
+  filter(provincia == "Cienfuegos") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.grm <- casos.prov.tiempo %>% 
+  filter(provincia == "Granma") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.gtm <- casos.prov.tiempo %>% 
+  filter(provincia == "Guantánamo") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.hol <- casos.prov.tiempo %>% 
+  filter(provincia == "Holguín") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.juv <- casos.prov.tiempo %>% 
+  filter(provincia == "Isla de la Junventud") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.hab <- casos.prov.tiempo %>% 
+  filter(provincia == "La Habana") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.ltu <- casos.prov.tiempo %>% 
+  filter(provincia == "Las Tunas") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.mtz <- casos.prov.tiempo %>% 
+  filter(provincia == "Matanzas") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.may <- casos.prov.tiempo %>% 
+  filter(provincia == "Mayabeque") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.pri <- casos.prov.tiempo %>% 
+  filter(provincia == "Pinar del Río") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.ssp <- casos.prov.tiempo %>% 
+  filter(provincia == "Sancti Spíritus") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.scu <- casos.prov.tiempo %>% 
+  filter(provincia == "Santiago de Cuba") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.vlc <- casos.prov.tiempo %>% 
+  filter(provincia == "Villa Clara") %>% 
+  mutate(casos.acum = cumsum(casos))
+  
+casos.prov.tiempo <- rbind(casos.art, 
+                           casos.cav, 
+                           casos.cfg, 
+                           casos.grm, 
+                           casos.gtm, 
+                           casos.hol, 
+                           casos.juv, 
+                           casos.hab, 
+                           casos.ltu, 
+                           casos.mtz, 
+                           casos.may, 
+                           casos.pri, 
+                           casos.ssp, 
+                           casos.scu, 
+                           casos.vlc) 
+
+casos.prov.tiempo <- casos.prov.tiempo %>% 
+  rename(casos.acum.prov = casos.acum) %>% 
+  arrange(fecha_confirmacion)
+
+
+casos.prov.tiempo %>% 
+  filter(provincia == "La Habana") %>% 
+  ggplot(aes(x = casos.acum.prov,
+             y = casos,
+             group = provincia,
+             color = provincia,
+             show.legend = F)) +
+    geom_line() +
+    scale_y_log10() +
+    scale_x_log10() +
+    theme(panel.grid.minor = element_blank())
+
+casos.prov.tiempo.anim <- casos.prov.tiempo %>% 
+  ggplot(aes(x = casos.acum.prov,
+             y = casos,
+             group = provincia,
+             color = provincia)) +
+  geom_line(show.legend = F) +
+  geom_point(show.legend = F) +
+  scale_y_log10() +
+  scale_x_log10() +
+  labs(x = "Casos Acumulados", y = "Casos Nuevos",
+       title = paste0("Crecimiento de nuevos Casos por Provincias\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = 'fecha_confirmacion: {frame_time}',
+       caption = "Fuente de datos: https://covid19cubadata.github.io/#cuba\n
+       Enlace a fichero de datos : https://covid19cubadata.github.io/data/covid19-casos.csv\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme(panel.grid.minor = element_blank()) +
+  facet_wrap(~provincia) +  
+  theme_ipsum() +
+  theme(axis.text.x = element_text(hjust = 1), 
+        panel.grid.major.x = element_blank()) +
+  transition_reveal(fecha_confirmacion) +
+  ease_aes('linear')
+
+image_write_gif(animate(casos.prov.tiempo.anim, 
+                        width = 900, 
+                        height = 900, 
+                        nframes = 560, 
+                        fps = 50, 
+                        renderer=magick_renderer()), 
+                "figs/casos.prov.tiempo.anim.gif")    

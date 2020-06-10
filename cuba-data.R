@@ -276,6 +276,95 @@ casos.prov.mun <- as_tibble(left_join(distribucion.municipios.provincia, casosmu
 
 casos.prov.mun$casos[is.na(casos.prov.mun$casos)] <- 0
 
+## Creanda data frame con casos acumulados por provincias en el tiempo
+casos.prov.tiempo <- 
+  count(cubadata, fecha_confirmacion, provincia) %>% 
+  rename(casos = n)
+
+casos.art <- casos.prov.tiempo %>% 
+  filter(provincia == "Artemisa") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cmg <- casos.prov.tiempo %>% 
+  filter(provincia == "Camagüey") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cav <- casos.prov.tiempo %>% 
+  filter(provincia == "Ciego de Ávila") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.cfg <- casos.prov.tiempo %>% 
+  filter(provincia == "Cienfuegos") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.grm <- casos.prov.tiempo %>% 
+  filter(provincia == "Granma") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.gtm <- casos.prov.tiempo %>% 
+  filter(provincia == "Guantánamo") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.hol <- casos.prov.tiempo %>% 
+  filter(provincia == "Holguín") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.juv <- casos.prov.tiempo %>% 
+  filter(provincia == "Isla de la Junventud") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.hab <- casos.prov.tiempo %>% 
+  filter(provincia == "La Habana") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.ltu <- casos.prov.tiempo %>% 
+  filter(provincia == "Las Tunas") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.mtz <- casos.prov.tiempo %>% 
+  filter(provincia == "Matanzas") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.may <- casos.prov.tiempo %>% 
+  filter(provincia == "Mayabeque") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.pri <- casos.prov.tiempo %>% 
+  filter(provincia == "Pinar del Río") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.ssp <- casos.prov.tiempo %>% 
+  filter(provincia == "Sancti Spíritus") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.scu <- casos.prov.tiempo %>% 
+  filter(provincia == "Santiago de Cuba") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.vlc <- casos.prov.tiempo %>% 
+  filter(provincia == "Villa Clara") %>% 
+  mutate(casos.acum = cumsum(casos))
+
+casos.prov.tiempo <- rbind(casos.art, 
+                           casos.cav, 
+                           casos.cfg, 
+                           casos.grm, 
+                           casos.gtm, 
+                           casos.hol, 
+                           casos.juv, 
+                           casos.hab, 
+                           casos.ltu, 
+                           casos.mtz, 
+                           casos.may, 
+                           casos.pri, 
+                           casos.ssp, 
+                           casos.scu, 
+                           casos.vlc) 
+
+casos.prov.tiempo <- casos.prov.tiempo %>% 
+  rename(casos.acum.prov = casos.acum) %>% 
+  arrange(fecha_confirmacion)
+
 ## Salva de los datos para su análisis
 
 save(cubadata, file = "rda/cubadata.rda")
@@ -286,6 +375,8 @@ save(class.muertes, file = "rda/class.muertes.rda")
 save(casospoblmun, file = "rda/casospoblmun.rda")
 save(casos.top.10.cu, file = "rda/casos.top.10.cu.rda")
 save(casos.ecdc, file = "rda/casos.ecdc.rda")
+save(casos.prov.tiempo, file = "rda/casos.prov.tiempo.rda")
+
 
 write_json(cubadata, "data/cubadata.json")
 write_json(casos, "data/casos.json")

@@ -142,3 +142,34 @@ image_write_gif(animate(`tasa.10^5.top.10.cu.anim.n`,
                         fps = 50, 
                         renderer=magick_renderer()), 
                 "figs/`tasa.10^5.top.10.cu.anim.n`.gif")
+
+casos.prov.tiempo.anim <- casos.prov.tiempo %>% 
+  ggplot(aes(x = casos.acum.prov,
+             y = casos,
+             group = provincia,
+             color = provincia)) +
+  geom_line(show.legend = F) +
+  geom_point(show.legend = F) +
+  scale_y_log10() +
+  scale_x_log10() +
+  labs(x = "Casos Acumulados", y = "Casos Nuevos",
+       title = paste0("Crecimiento de nuevos Casos por Provincias\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = ,
+       caption = "Fuente de datos: https://covid19cubadata.github.io/#cuba\n
+       Enlace a fichero de datos : https://covid19cubadata.github.io/data/covid19-casos.csv\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  theme(panel.grid.minor = element_blank()) +
+  facet_wrap(~provincia) +  
+  theme_ipsum() +
+  theme(axis.text.x = element_text(hjust = 1), 
+        panel.grid.major.x = element_blank()) +
+  transition_reveal(fecha_confirmacion) +
+  ease_aes('linear')
+
+image_write_gif(animate(casos.prov.tiempo.anim, 
+                        width = 900, 
+                        height = 900, 
+                        nframes = 560, 
+                        fps = 50, 
+                        renderer=magick_renderer()), 
+                "figs/casos.prov.tiempo.anim.gif") 

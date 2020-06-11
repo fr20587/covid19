@@ -562,7 +562,7 @@ casos.prov.tiempo.anim <- casos.prov.tiempo %>%
   scale_x_log10() +
   labs(x = "Casos Acumulados", y = "Casos Nuevos",
        title = paste0("Crecimiento de nuevos Casos por Provincias\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-       subtitle = 'fecha_confirmacion: {frame_time}',
+       subtitle = ,
        caption = "Fuente de datos: https://covid19cubadata.github.io/#cuba\n
        Enlace a fichero de datos : https://covid19cubadata.github.io/data/covid19-casos.csv\n
        Gráfico realizado por: Frank Rodríguez López") +
@@ -581,3 +581,33 @@ image_write_gif(animate(casos.prov.tiempo.anim,
                         fps = 50, 
                         renderer=magick_renderer()), 
                 "figs/casos.prov.tiempo.anim.gif")    
+
+## Creando data frame de eventos en el tiempo
+# nuevos
+casos.nuevos <- cubadata %>% 
+  select(fecha_confirmacion) %>% 
+  count(fecha = fecha_confirmacion) %>% 
+  rename(cantidad = n) %>% 
+  mutate(evento = "Nuevos Casos")
+
+# acumulados
+casos.acumulados <- casos.nuevos %>% 
+  mutate(cantidad = cumsum(cantidad),
+         evento = "Casos Acumulados")
+
+# fallecidos
+casos.fallecidos <- muertes %>% 
+  select(`Fecha de fallecimiento`) %>% 
+  count(`Fecha de fallecimiento`) %>% 
+  rename(cantidad = n,
+         fecha = `Fecha de fallecimiento`) %>% 
+  mutate(evento = "Fallecidos",
+         fecha = ymd(fecha))
+
+
+
+
+
+
+
+

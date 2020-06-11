@@ -277,9 +277,9 @@ count(class.muertes, clasificación) %>% mutate(clasificación = reorder(clasifi
   geom_text(aes(label = n), show.legend = F, hjust = -1) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
   labs(x = "", y = "",
-       title = paste0("Casos detectados con COVID-19 con respecto a la fecha de deceso - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       title = paste0("Casos detectados con COVID-19 con respecto a la fecha de deceso.\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
        subtitle = "NA: Casos que no he podido emparejar la fecha de detección con la fecha de fallecimiento al no informarse 
-       la provincia y el municipio en el parte oficial o que las edades y sexos dados en el informe oficial no coincide 
+       la provincia y el municipio en el parte oficial o que las edades y sexos dados en el informe oficial no coincide. 
        con ninguno de los casos idetificados para esa provincia y municipio",
        caption = "Fuente de datos: Reportes oficiales publicados en la página web del MINSAP\n
        Enlace a fichero de datos: https://github.com/fr20587/covid19/blob/master/data/muertes.xlsx\n
@@ -343,3 +343,46 @@ casos.prov.tiempo.anim <- casos.prov.tiempo %>%
         panel.grid.major.x = element_blank())
 
 ggsave("figs/casos.prov.tiempo.png", width = 30, height = 30, units = "cm")
+
+## Represaentación de Nuevos Casos por provincias en los últimos 15 días.
+
+casos.prov.u15.dias <- casos.prov.tiempo %>% 
+  filter(fecha_confirmacion >= (Sys.Date() - 15)) %>% 
+  ggplot(aes(x = fecha_confirmacion,
+             y = casos,
+             group = provincia,
+             fill = provincia)) +
+  geom_col(show.legend = F) +
+  scale_x_date(date_breaks = "2 days") + 
+  labs(x = "Casos Acumulados", y = "Casos Nuevos",
+       title = paste0("Cantidad de nuevos casos por Provincias en los últimos 15 días.\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = ,
+       caption = "Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") +
+  theme(panel.grid.minor = element_blank()) +
+  facet_wrap(~provincia) +  
+  theme_ipsum() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.prov.u15.dias.png", width = 30, height = 30, units = "cm")
+
+## Represaentación de Nuevos Casos por provincias en el tiempo..
+
+casos.nuevos.prov.tiempo <- casos.prov.tiempo %>% 
+  ggplot(aes(x = fecha_confirmacion,
+             y = casos,
+             group = provincia,
+             color = provincia)) +
+  geom_col(show.legend = F) +
+  scale_x_date(date_breaks = "2 week") + 
+  labs(x = "Casos Acumulados", y = "Casos Nuevos",
+       title = paste0("Cantidad de nuevos casos por Provincias\n", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = ,
+       caption = "Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") +
+  theme(panel.grid.minor = element_blank()) +
+  facet_wrap(~provincia) +  
+  theme_ipsum() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.nuevos.prov.tiempo.png", width = 30, height = 30, units = "cm")

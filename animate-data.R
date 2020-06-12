@@ -173,3 +173,34 @@ image_write_gif(animate(casos.prov.tiempo.anim,
                         fps = 50, 
                         renderer=magick_renderer()), 
                 "figs/casos.prov.tiempo.anim.gif") 
+
+casos.tiempo.eventos.anim <- casos.tiempo.eventos %>%
+  ggplot(aes(x = Fecha,
+             y = Cantidad,
+             group = Evento,
+             color = Evento)) +
+  geom_line(alpha = 0.5,
+            size = 2.5) +
+  geom_point(size = 5) +
+  scale_x_date(breaks = "2 weeks") +
+  labs(x = "Fecha", 
+       y ="Cantidad de Casos",
+       title = paste0("Evolución de casos por Evento en el tiempo.\nDatos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption ="Fuente de datos: https://covid19cubadata.github.io\n
+         Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json\n
+         Gráfico realizado por: Frank Rodríguez López") +
+  theme_ipsum() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1),
+        panel.background = element_blank(),
+        legend.background = element_blank(),
+        legend.position = 'top') + 
+  transition_reveal(Fecha) +
+  ease_aes('linear')
+
+image_write_gif(animate(casos.tiempo.eventos.anim, 
+                        width = 900, 
+                        height = 600, 
+                        nframes = 560, 
+                        fps = 25, 
+                        renderer=magick_renderer()), 
+                "figs/casos.tiempo.eventos.anim.gif") 

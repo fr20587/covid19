@@ -117,7 +117,7 @@ cubadata <- cubadata %>% mutate(sexo = as.factor(sexo),
                                                        "90-99", "100 o más")))
 
 
-                                                        ### Creando el recurso casos ###
+                                                        ### Creando el recurso cantidad de casos por evento en el tiempo ###
 fecha <- c(act[["date"]][["values"]])
 nuevos <- c(act[["daily"]][["values"]])
 acumulados <- c(act[["accumulated"]][["values"]])
@@ -127,6 +127,21 @@ recuperados <- c(rec[["accumulated"]][["values"]])
 
 casos <- tibble(fecha, nuevos, activos, acumulados, recuperados, muertos) %>% 
   mutate(fecha = as.Date(fecha))
+
+casos.tiempo.eventos <- casos %>% 
+  rename("Fecha" = "fecha",
+         "Casos Nuevos" = "nuevos",
+         "Casos Acumulados" = "acumulados",
+         "Casos Activos" = "activos",
+         "Casos Recuperados" = "recuperados",
+         "Casos Fallecidos" = "muertos") %>% 
+  gather("Casos Nuevos", 
+         "Casos Acumulados", 
+         "Casos Activos", 
+         "Casos Recuperados",
+         "Casos Fallecidos",
+         key = "Evento", 
+         value = "Cantidad")
 
                                                         ### Trabajando con casosprov ###
 
@@ -376,7 +391,7 @@ save(casospoblmun, file = "rda/casospoblmun.rda")
 save(casos.top.10.cu, file = "rda/casos.top.10.cu.rda")
 save(casos.ecdc, file = "rda/casos.ecdc.rda")
 save(casos.prov.tiempo, file = "rda/casos.prov.tiempo.rda")
-
+save(casos.tiempo.eventos, file = "rda/casos.tiempo.eventos.rda")
 
 write_json(cubadata, "data/cubadata.json")
 write_json(casos, "data/casos.json")

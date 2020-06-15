@@ -93,6 +93,7 @@ rango.c2.mun%>%
   theme(axis.text.x = element_text(angle=90, hjust = 1, vjust = 0.45),
         legend.position = 'top')
 
+
 ggsave("figs/casos.rango2.mun.png", width = 60, height = 20, units = "cm")
 
 # Analizando la edad media de casos y su desviación estandar

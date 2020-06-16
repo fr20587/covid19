@@ -387,3 +387,4 @@ casos.nuevos.prov.tiempo <- casos.prov.tiempo %>%
         panel.grid.major.x = element_blank())
 
 ggsave("figs/casos.nuevos.prov.tiempo.png", width = 30, height = 30, units = "cm")
+

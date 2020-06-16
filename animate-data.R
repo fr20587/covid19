@@ -62,7 +62,7 @@ image_write_gif(animate(`tasa.10^5.top.10.cu.anim`,
 casos.top.10.cu.anim.n <- casos.top.10.cu  %>% 
   ggplot(aes(x = dateRep, y = casos.acum)) +
   geom_line(aes(colour = geoId), size = 1.5, alpha = 0.5, show.legend = F) +
-  geom_flag(aes(country = geoId), size = 8) +
+ # geom_flag(aes(country = geoId), size = 8) +
   labs(x = "Fecha", y ="Cantidad de Casos",
        title = paste0("Evolución de Casos\n TOP-10 Paises más Cuba - ",
                       "Datos cierre: ", 
@@ -199,7 +199,7 @@ casos.tiempo.eventos.anim <- casos.tiempo.eventos %>%
 
 image_write_gif(animate(casos.tiempo.eventos.anim, 
                         width = 900, 
-                        height = 500, 
+                        height = 600, 
                         nframes = 560, 
                         fps = 25, 
                         renderer=magick_renderer()), 

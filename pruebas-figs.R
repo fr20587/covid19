@@ -577,7 +577,46 @@ casos.tiempo.eventos <- casos %>%
          key = "Evento", 
          value = "Cantidad")
 
+## comparación para Bea
+
+casos.ecdc %>% 
+  filter(deaths >=0) %>% 
+  filter(continentExp != "Other") %>% 
+  ggplot(aes(dateRep, 
+         deaths, 
+         group = continentExp, 
+         color = continentExp)) + 
+  geom_line(show.legend = F) + 
+  labs(x = "Meses", y = "Pacientes Fallecidos",
+       title = paste0("Pacientes Fallecidos por Continente - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       subtitle = "Pacientes Fallecidos vs Meses.\n
+       Media de Pacientes Fallecidos por día: Cuba = 0.90, resto del mundo 18.32",
+       caption = "Fuente de datos: Centro europeo para la prevención y el control de enfermedades.\n
+       Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-06-15.xlsx\n
+       Gráfico realizado por: Frank Rodríguez López") +
+  
+  scale_y_continuous() +
+  theme_bw() +
+  theme(panel.grid.major.x = element_blank()) + 
+  facet_wrap(~continentExp)
+
+ggsave("figs/fallecidos.continentes.mes.png", width = 30, height = 20, units = "cm")
+
+casos.ecdc %>% 
+  group_by(countriesAndTerritories) %>% 
+  filter(deaths >= 0) %>% 
+  filter(!is.na(deaths)) 
+  
+mean(casos.ecdc$deaths) # media de fallecidos diarios en el mundo 18.32 personas
+
+cub <- casos.ecdc %>% 
+  group_by(countriesAndTerritories) %>% 
+  filter(deaths >= 0) %>% 
+  filter(!is.na(deaths)) %>% 
+  filter(countriesAndTerritories == "Cuba")
+
+mean(cub$deaths) # media de fallecidos diarios en Cuba 0.90 personas
 
 
-
-
+casos.ecdc %>% 
+  filter(continentExp == "Other")

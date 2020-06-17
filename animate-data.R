@@ -13,7 +13,7 @@ casos.top.10.cu.anim <- casos.top.10.cu  %>%
        caption ="Fuente de datos: Centro europeo para la prevención y el control de enfermedades\n
        Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
-  theme_ipsum() +
+  theme_ATHENDAT_claro() +
   theme(axis.text.x = element_text(hjust = 1), 
         panel.grid.major.x = element_blank()) +  
   transition_reveal(dateRep) +
@@ -41,7 +41,7 @@ image_write_gif(animate(casos.top.10.cu.anim,
        caption ="Fuente de datos: Centro europeo para la prevención y el control de enfermedades\n
        Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
-  theme_ipsum() +
+  theme_ATHENDAT_claro() +
   theme(axis.text.x = element_text(hjust = 1), 
         panel.grid.major.x = element_blank()) +  
   transition_reveal(dateRep) +
@@ -70,7 +70,7 @@ casos.top.10.cu.anim.n <- casos.top.10.cu  %>%
        caption ="Fuente de datos: Centro europeo para la prevención y el control de enfermedades\n
        Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
-  theme_minimal() +
+  theme_ATHENDAT_claro() +
   theme(panel.grid.minor = element_blank(),
         plot.background = element_rect(fill = "#053841"),
         panel.background = element_rect(fill = "#053841", 
@@ -126,7 +126,7 @@ image_write_gif(animate(casos.top.10.cu.anim.n,
        caption ="Fuente de datos: Centro europeo para la prevención y el control de enfermedades\n
        Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-05-15.xlsx\n
        Gráfico realizado por: Frank Rodríguez López") +
-  dark_mode(theme_ipsum()) +
+  dark_mode(theme_ATHENDAT_claro()) +
   theme(axis.text.x = element_text(angle = 17, hjust = 1), 
         panel.grid.major.x = element_blank()) +  
   transition_reveal(dateRep) +
@@ -160,7 +160,7 @@ casos.prov.tiempo.anim <- casos.prov.tiempo %>%
        Gráfico realizado por: Frank Rodríguez López") +
   theme(panel.grid.minor = element_blank()) +
   facet_wrap(~provincia) +  
-  theme_ipsum() +
+  theme_ATHENDAT_claro() +
   theme(axis.text.x = element_text(hjust = 1), 
         panel.grid.major.x = element_blank()) +
   transition_reveal(fecha_confirmacion) +
@@ -181,19 +181,19 @@ casos.tiempo.eventos.anim <- casos.tiempo.eventos %>%
              color = Evento)) +
   geom_line(alpha = 0.5,
             size = 2.5) +
-  geom_point(size = 5) +
+  geom_point(alpha = 0.5,
+             size = 5) +
   scale_x_date(breaks = "2 weeks") +
+  scale_color_manual(values = pal) +
   labs(x = "Fecha", 
-       y ="Cantidad de Casos",
-       title = paste0("Evolución de casos por Evento en el tiempo.\nDatos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-       caption ="Fuente de datos: https://covid19cubadata.github.io\n
+       y = "Cantidad de Casos",
+       title = "Evolución de casos por Evento en el tiempo.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "Fuente de datos: https://covid19cubadata.github.io\n
          Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json\n
          Gráfico realizado por: Frank Rodríguez López") +
-  theme_ipsum() +
-  theme(axis.text.x = element_text(angle = 17, hjust = 1),
-        panel.background = element_blank(),
-        legend.background = element_blank(),
-        legend.position = 'top') + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1)) + 
   transition_reveal(Fecha) +
   ease_aes('linear')
 
@@ -202,5 +202,5 @@ image_write_gif(animate(casos.tiempo.eventos.anim,
                         height = 600, 
                         nframes = 560, 
                         fps = 25, 
-                        renderer=magick_renderer()), 
+                        renderer = magick_renderer()), 
                 "figs/casos.tiempo.eventos.anim.gif") 

@@ -115,7 +115,7 @@ ggsave("figs/casos.evo.n.png", width = 30, height = 20, units = "cm")
 
 
                           
-pal <- c("#ef233c", "#6bab90", "#ee6c4d", "#3d5a80", "#815c4e")
+
 ## Animación Casos Cuba vs Top10
 
 casos.top.10.cu <- casos.ecdc %>% 
@@ -577,46 +577,70 @@ casos.tiempo.eventos <- casos %>%
          key = "Evento", 
          value = "Cantidad")
 
-## comparación para Bea
 
-casos.ecdc %>% 
-  filter(deaths >=0) %>% 
-  filter(continentExp != "Other") %>% 
-  ggplot(aes(dateRep, 
-         deaths, 
-         group = continentExp, 
-         color = continentExp)) + 
-  geom_line(show.legend = F) + 
-  labs(x = "Meses", y = "Pacientes Fallecidos",
-       title = paste0("Pacientes Fallecidos por Continente - ", "Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-       subtitle = "Pacientes Fallecidos vs Meses.\n
-       Media de Pacientes Fallecidos por día: Cuba = 0.90, resto del mundo 18.32",
-       caption = "Fuente de datos: Centro europeo para la prevención y el control de enfermedades.\n
-       Enlace a fichero de datos: https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-06-15.xlsx\n
-       Gráfico realizado por: Frank Rodríguez López") +
-  
-  scale_y_continuous() +
-  theme_bw() +
-  theme(panel.grid.major.x = element_blank()) + 
-  facet_wrap(~continentExp)
+casos.tiempo.eventos %>%
+  ggplot(aes(x = Fecha,
+             y = Cantidad,
+             group = Evento,
+             color = Evento)) +
+  geom_line(alpha = 0.5,
+            size = 2.5) +
+  geom_point(size = 5) +
+  scale_x_date(breaks = "2 weeks") +
+  scale_color_manual(values=pal) +
+  labs(x = "Fecha", 
+       y ="Cantidad de Casos",
+       title = paste0("Evolución de casos por Evento en el tiempo.\nDatos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption ="Fuente de datos: https://covid19cubadata.github.io\n
+         Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json\n
+         Gráfico realizado por: Frank Rodríguez López") +
+  theme_ATHENDAT_claro()
 
-ggsave("figs/fallecidos.continentes.mes.png", width = 30, height = 20, units = "cm")
-
-casos.ecdc %>% 
-  group_by(countriesAndTerritories) %>% 
-  filter(deaths >= 0) %>% 
-  filter(!is.na(deaths)) 
-  
-mean(casos.ecdc$deaths) # media de fallecidos diarios en el mundo 18.32 personas
-
-cub <- casos.ecdc %>% 
-  group_by(countriesAndTerritories) %>% 
-  filter(deaths >= 0) %>% 
-  filter(!is.na(deaths)) %>% 
-  filter(countriesAndTerritories == "Cuba")
-
-mean(cub$deaths) # media de fallecidos diarios en Cuba 0.90 personas
+ggsave("casos.tiempo.eventos.png", width = 60, height = 30, units = "cm")
 
 
-casos.ecdc %>% 
-  filter(continentExp == "Other")
+magick::image_write(agregar_logo(plot_path = "casos.tiempo.eventos.png",
+                                 logo_path = "logo/logo.png",
+                                 posicion_logo= "sd",
+                                 logo_scale = 10), 
+                    "casos.tiempo.eventos.png")
+
+magick::image_write(agregar_logo(plot_path = "casos.tiempo.eventos.png",
+                                 logo_path = "logo/logo.png",
+                                 posicion_logo= "sd",
+                                 logo_scale = 10), 
+                    "casos.tiempo.eventos.png")
+
+
+image_write_gif(animate(agregar_logo(plot_path = casos.tiempo.eventos.anim,
+                                     logo_path = "logo/logo.png",
+                                     posicion_logo= "sd",
+                                     logo_scale = 10),
+                        width = 900, 
+                        height = 500, 
+                        nframes = 560, 
+                        fps = 25, 
+                        renderer=magick_renderer()), 
+                "figs/casos.tiempo.eventos.anim.gif") 
+
+image_write(animate(casos.tiempo.eventos.anim, 
+                    width = 900, 
+                    height = 500, 
+                    nframes = 560, 
+                    fps = 25, 
+                    renderer=magick_renderer()), 
+            "figs/casos.tiempo.eventos.anim.gif")
+
+
+
+
+
+
+
+
+
+
+
+
+
+

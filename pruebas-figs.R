@@ -578,58 +578,48 @@ casos.tiempo.eventos <- casos %>%
          value = "Cantidad")
 
 
-casos.tiempo.eventos %>%
+casos.tiempo.eventos.anim <- casos.tiempo.eventos %>%
   ggplot(aes(x = Fecha,
              y = Cantidad,
              group = Evento,
              color = Evento)) +
+  
   geom_line(alpha = 0.5,
             size = 2.5) +
-  geom_point(size = 5) +
+  
+  geom_point(alpha = 0.5,
+             size = 5) +
   scale_x_date(breaks = "2 weeks") +
+  
   scale_color_manual(values=pal) +
+  
   labs(x = "Fecha", 
        y ="Cantidad de Casos",
-       title = paste0("Evolución de casos por Evento en el tiempo.\nDatos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
-       caption ="Fuente de datos: https://covid19cubadata.github.io\n
+       title = "Evolución de casos por Evento en el tiempo.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "Fuente de datos: https://covid19cubadata.github.io\n
          Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json\n
          Gráfico realizado por: Frank Rodríguez López") +
+  
   theme_ATHENDAT_claro()
 
-ggsave("casos.tiempo.eventos.png", width = 60, height = 30, units = "cm")
+#☺ ggsave("casos.tiempo.eventos.png", width = 60, height = 30, units = "cm")
 
 
 magick::image_write(agregar_logo(plot_path = "casos.tiempo.eventos.png",
                                  logo_path = "logo/logo.png",
-                                 posicion_logo= "sd",
+                                 posicion_logo = "sd",
                                  logo_scale = 10), 
                     "casos.tiempo.eventos.png")
 
-magick::image_write(agregar_logo(plot_path = "casos.tiempo.eventos.png",
-                                 logo_path = "logo/logo.png",
-                                 posicion_logo= "sd",
-                                 logo_scale = 10), 
-                    "casos.tiempo.eventos.png")
-
-
-image_write_gif(animate(agregar_logo(plot_path = casos.tiempo.eventos.anim,
-                                     logo_path = "logo/logo.png",
-                                     posicion_logo= "sd",
-                                     logo_scale = 10),
+image_write_gif(animate(casos.tiempo.eventos.anim, 
                         width = 900, 
-                        height = 500, 
+                        height = 600, 
                         nframes = 560, 
                         fps = 25, 
-                        renderer=magick_renderer()), 
+                        renderer = magick_renderer()), 
                 "figs/casos.tiempo.eventos.anim.gif") 
 
-image_write(animate(casos.tiempo.eventos.anim, 
-                    width = 900, 
-                    height = 500, 
-                    nframes = 560, 
-                    fps = 25, 
-                    renderer=magick_renderer()), 
-            "figs/casos.tiempo.eventos.anim.gif")
 
 
 

@@ -32,7 +32,7 @@ distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.pr
 
 # Importacion de información internacional de la base de datos de ECDC
 url <- url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
-casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
+#casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
 
 ## Manejo de los datos
 

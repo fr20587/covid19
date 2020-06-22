@@ -169,6 +169,7 @@ casospoblmun <- casospoblmun %>%
   mutate(`Tasa.10^5Hab` = round(n*10^5/poblacion, 2)) %>% 
   arrange(desc(`Tasa.10^5Hab`))
 
+casospoblmun <- merge(casospoblmun, distribucion.municipios.provincia, by = "municipio")
                                           ## Creando recurso de casos Cuba vs TOP10
 
 casos.top.10.cu <- casos.ecdc %>% 

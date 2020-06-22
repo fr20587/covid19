@@ -367,8 +367,8 @@ casospoblmun %>% filter(`Tasa.10^5Hab` > 20) %>%
   mutate(municipio = reorder(municipio, `Tasa.10^5Hab`)) %>% 
   ggplot(aes(x = `Tasa.10^5Hab`, xend = 0,
              y = municipio, yend = municipio,
-             color = municipio)) +
-  geom_point(show.legend = F) +
+             color = provincia)) +
+  geom_point(show.legend = T) +
   geom_segment(show.legend = F) +
   geom_text(aes(label = `Tasa.10^5Hab`), 
             show.legend = F, 

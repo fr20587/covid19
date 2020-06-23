@@ -169,6 +169,7 @@ casospoblmun <- casospoblmun %>%
   mutate(`Tasa.10^5Hab` = round(n*10^5/poblacion, 2)) %>% 
   arrange(desc(`Tasa.10^5Hab`))
 
+casospoblmun <- merge(casospoblmun, distribucion.municipios.provincia, by = "municipio")
                                           ## Creando recurso de casos Cuba vs TOP10
 
 casos.top.10.cu <- casos.ecdc %>% 
@@ -230,7 +231,7 @@ casos.ir <- casos.top.10.cu %>% filter(geoId == "IR") %>%
   mutate(geoId = ifelse(geoId == "IR", "ir", ""))
 
 casos.top.10.cu <- rbind(casos.cu, casos.us, casos.es, casos.ru, casos.uk, casos.it, casos.br, casos.fr, casos.tr, casos.ir) %>% 
-  mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2018)
+  mutate(`tasa.10^5.hab.acum` = 10^5*casos.acum/popData2019)
 
 ## Creando data frame con casos por municipios y provincias
 casos.prov.mun <- as_tibble(left_join(distribucion.municipios.provincia, casosmun, by = "municipio")) %>% 

@@ -623,7 +623,11 @@ image_write_gif(animate(casos.tiempo.eventos.anim,
 
 
 
+##======================================== Mapa animado de dispesión de los casos
 
+install.packages(c("sf", "geojsonsf"))
+library(sf)
+library(geojsonsf)
 
 
 

@@ -182,15 +182,15 @@ agregar_logo <- function(plot_path, logo_path, posicion_logo, logo_scale = 10){
 
 ### Expreción para guardar gráfico con logo
 
-plot_with_logo <- agregar_logo(
-    plot_path = paste0(Sys.Date(), "_", short_name, "_peak-years.png"), # url or local file for the plot
-    logo_path = logo_profdat, # url or local file for the logo
-    logo_position = "top right", # choose a corner
+#plot_with_logo <- agregar_logo(
+#    plot_path = paste0(Sys.Date(), "_", short_name, "_peak-years.png"), # url or local file for the plot
+#    logo_path = logo_profdat, # url or local file for the logo
+#    logo_position = "top right", # choose a corner
     # 'top left', 'top right', 'bottom left' or 'bottom right'
-    logo_scale = 7)
+#    logo_scale = 7)
 
 # save the image and write to working directory
-magick::image_write(plot_with_logo, paste0(Sys.Date(), "_", short_name, "_peak-years.png"))
+#magick::image_write(plot_with_logo, paste0(Sys.Date(), "_", short_name, "_peak-years.png"))
 
 
 

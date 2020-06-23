@@ -32,7 +32,7 @@ image_write_gif(animate(casos.top.10.cu.anim,
   ggplot(aes(x = dateRep, y = `tasa.10^5.hab.acum`)) +
   geom_line(aes(colour = geoId), size = 1.5, alpha = 0.5, show.legend = F) +
   geom_flag(aes(country = geoId), size = 8) +
-  labs(x = "Fecha", y ="Cantidad de Casos",
+  labs(x = "Fecha", y = "Cantidad de Casos",
        title = paste0("Evolución de Casos\n TOP-10 Paises más Cuba - ",
                       "Datos cierre: ", 
                       format(Sys.Date(), "%A, %d de %B de %Y")),

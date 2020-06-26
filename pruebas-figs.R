@@ -620,14 +620,16 @@ image_write_gif(animate(casos.tiempo.eventos.anim,
                         renderer = magick_renderer()), 
                 "figs/casos.tiempo.eventos.anim.gif") 
 
+## Creando data frame con casos acumulados por provincias y municipios en el tiempo
+casos.prov.mun.tiempo <- 
+  count(cubadata, fecha_confirmacion, provincia, municipio) %>% 
+  rename(casos = n)
+
+## Creando mapa de Cuba
 
 
 
-##======================================== Mapa animado de dispesión de los casos
 
-install.packages(c("geojsonsf"))
-library(sf)
-library(geojsonsf)
 
 
 

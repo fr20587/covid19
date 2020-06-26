@@ -32,7 +32,7 @@ distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.pr
 
 # Importacion de información internacional de la base de datos de ECDC
 url <- url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
-#casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
+casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
 
 ## Manejo de los datos
 
@@ -239,7 +239,7 @@ casos.prov.mun <- as_tibble(left_join(distribucion.municipios.provincia, casosmu
 
 casos.prov.mun$casos[is.na(casos.prov.mun$casos)] <- 0
 
-## Creanda data frame con casos acumulados por provincias en el tiempo
+## Creando data frame con casos acumulados por provincias en el tiempo
 casos.prov.tiempo <- 
   count(cubadata, fecha_confirmacion, provincia) %>% 
   rename(casos = n)

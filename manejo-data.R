@@ -4,7 +4,7 @@ load("rda/casos.rda")
 load("rda/casosprov.rda")
 load("rda/factores.riesgos.rda")
 
-# Distribución de casos por edades por Provicias
+# Distribución de casos por edades por Provincias
 cubadata %>% 
   mutate(provincia = reorder(provincia, edad, FUN = median)) %>% 
   ggplot(aes(x = provincia, y = edad, color = provincia)) + 

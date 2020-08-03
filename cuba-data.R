@@ -11,10 +11,10 @@ library(ggimage)
 library(Cairo)
 library(magick)
 library(scales)
-library(d3heatmap)
+#library(d3heatmap)
 library(hrbrthemes)
 library(ggdark)
-library(ggflags)
+#library(ggflags)
 library(gifski)
 
 ## Lectura de los datos
@@ -28,7 +28,7 @@ rec <- fromJSON(url("https://covid19cuba.github.io/covid19cubadata.github.io/api
 muertes <- read_excel("data/muertes.xlsx")
 poblacionmun <- read_excel("data/poblacion.cuba.2018.onei.xlsx")
 distribucion.municipios.provincia <- read_excel("data/distribucion.municipios.provincia.xlsx")
-#covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
+covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.json"))
 
 # Importacion de información internacional de la base de datos de ECDC
 url <- url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
@@ -351,3 +351,4 @@ write_json(casospoblmun, "data/casospoblmun.json")
 write_json(casos.top.10.cu, "data/casos.top.10.cu.json")
 write_json(casos.ecdc, "data/casos.ecdc.json")
 write_json(casos.prov.mun, "data/casos.prov.mun.json")
+

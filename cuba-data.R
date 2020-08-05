@@ -16,6 +16,7 @@ library(hrbrthemes)
 library(ggdark)
 #library(ggflags)
 library(gifski)
+library(utils)
 
 ## Lectura de los datos
 
@@ -33,6 +34,7 @@ covidcuba <- fromJSON(url("https://covid19cubadata.github.io/data/covid19-cuba.j
 # Importacion de información internacional de la base de datos de ECDC
 url <- url("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
 casos.ecdc <- read_csv(url) %>% mutate(dateRep = dmy(dateRep))
+data <- read.csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv", na.strings = "", fileEncoding = "UTF-8-BOM")
 
 ## Manejo de los datos
 

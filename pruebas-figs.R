@@ -627,8 +627,45 @@ casos.prov.mun.tiempo <-
 
 ## Creando mapa de Cuba
 
+# Segmentando la cantidad de casos por rango etario en el tiempo
+count(cubadata, fecha_confirmacion, rango2) %>% 
+  rename(casos = n) %>% 
+  ggplot(aes(fecha_confirmacion, casos, color = rango2)) +
+    geom_line(show.legend = F) +
+    facet_grid(rango2~.) +
+  labs(x = "", y = "Edad",
+       title = "Evolución en el tiempo de los casos de COVID-19 por Rango Etario en Cuba",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "''Provincias ordenadas por media de edad'' - Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1),
+        panel.grid.major.x = element_blank())
 
 
+casos.tiempo.eventos %>% 
+  filter(Evento == "Casos Activos") %>% 
+  ggplot(aes(x = Fecha,
+             y = Cantidad,
+             group = Evento,
+             color = Evento)) +
+  geom_line(alpha = 0.5,
+            size = 2.5) +
+  geom_hline(yintercept = 240, color = "#aa4586", linetype ="dotted") +
+  geom_text(x = Sys.Date(), 
+            y = 240, 
+            label = paste0("Casos Activos = ", 240), 
+            hjust = -1, vjust = -0.5, 
+            colour = "red", size = 11 * 0.8 / .pt,
+            family = "URWGeometricW03-Light") +
+  scale_x_date(breaks = "2 weeks") +
+  scale_color_manual(values = pal) +
+  labs(x = "Fecha", 
+       y = "Cantidad de Casos",
+       title = "Evolución de Casos Activos en el tiempo.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "Fuente de datos: https://covid19cubadata.github.io - Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json - Gráfico realizado por: Frank Rodríguez López") +
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1))
 
 
 

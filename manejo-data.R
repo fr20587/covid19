@@ -482,3 +482,126 @@ image_write(agregar_logo(plot_path = "figs/casos.nuevos.prov.tiempo.png",
                          logo_scale = 7), 
             "figs/casos.nuevos.prov.tiempo.png")
 
+# Segmentando la cantidad de casos por rango etario en el tiempo
+
+casos.rango2 <- count(cubadata, fecha_confirmacion, rango2) %>% rename(casos = n)
+
+casos.rango2.tiempo <- casos.rango2 %>% 
+  ggplot(aes(fecha_confirmacion, casos, color = rango2)) +
+  geom_line(show.legend = F) +
+  scale_y_continuous() +
+  facet_grid(rango2~.) +
+  labs(x = "", y = "Cantidad",
+       title = "Evolución en el tiempo de los casos de COVID-19 por Rango Etario en Cuba",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "''Provincias ordenadas por media de edad'' - Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.rango2.tiempo.png", width = 30, height = 20, units = "cm")
+
+image_write(agregar_logo(plot_path = "figs/casos.rango2.tiempo.png",
+                         logo_path = "logo/logo.png",
+                         posicion_logo= "sd",
+                         logo_scale = 10), 
+            "figs/casos.rango2.tiempo.png")
+
+casos.rango2.tiempo.infantes <- casos.rango2 %>% 
+  filter(rango2 %in% c("0-9", "10-19")) %>% 
+  ggplot(aes(fecha_confirmacion, casos, color = rango2)) +
+  geom_line(show.legend = F) +
+  facet_grid(rango2~.) +
+  labs(x = "", y = "Cantidad",
+       title = "Evolución en el tiempo de los casos de COVID-19 
+Rangos Etarios de infantes en Cuba.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "''Provincias ordenadas por media de edad'' - Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.rango2.tiempo.infantes.png", width = 30, height = 10, units = "cm")
+
+image_write(agregar_logo(plot_path = "figs/casos.rango2.tiempo.infantes.png",
+                         logo_path = "logo/logo.png",
+                         posicion_logo= "sd",
+                         logo_scale = 7), 
+            "figs/casos.rango2.tiempo.infantes.png")
+
+casos.rango2.tiempo.trabajadores <- casos.rango2 %>% 
+  filter(rango2 %in% c("20-29", "30-39", "40-49", "50-59", "60-69")) %>% 
+  ggplot(aes(x = fecha_confirmacion, y = casos, color = rango2)) +
+  geom_line(show.legend = F) +
+  facet_grid(rango2~.) +
+  labs(x = "", y = "Cantidad",
+       title = "Evolución en el tiempo de los casos de COVID-19 
+Rangos Etarios en edad laboral en Cuba.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "''Provincias ordenadas por media de edad'' - Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.rango2.tiempo.trabajadores.png", width = 30, height = 15, units = "cm")
+
+image_write(agregar_logo(plot_path = "figs/casos.rango2.tiempo.trabajadores.png",
+                         logo_path = "logo/logo.png",
+                         posicion_logo= "sd",
+                         logo_scale = 7), 
+            "figs/casos.rango2.tiempo.trabajadores.png")
+
+casos.rango.tiempo <- count(cubadata, fecha_confirmacion, rango) %>% 
+  rename(casos = n) %>% 
+  ggplot(aes(fecha_confirmacion, casos, color = rango)) +
+  geom_line(show.legend = F) +
+  facet_grid(rango~.) +
+  labs(x = "", y = "Cantidad",
+       title = "Evolución en el tiempo de los casos de COVID-19 por Rango Etario en Cuba",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "''Provincias ordenadas por media de edad'' - Fuente de datos: https://covid19cubadata.github.io/#cuba - Enlace a fichero de datos: https://covid19cubadata.github.io/data/covid19-casos.csv - Gráfico realizado por: Frank Rodríguez López") + 
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1),
+        panel.grid.major.x = element_blank())
+
+ggsave("figs/casos.rango.tiempo.png", width = 30, height = 20, units = "cm")
+
+image_write(agregar_logo(plot_path = "figs/casos.rango.tiempo.png",
+                         logo_path = "logo/logo.png",
+                         posicion_logo= "sd",
+                         logo_scale = 10), 
+            "figs/casos.rango.tiempo.png")
+
+# Evolución de los casos activos en el tiempo.
+casos.activos.tiempo <- casos.tiempo.eventos %>% 
+  filter(Evento == "Casos Activos") %>% 
+  ggplot(aes(x = Fecha,
+             y = Cantidad,
+             group = Evento,
+             fill = Evento)) +
+  geom_area(alpha = 0.5, size = 2.5, show.legend = F) +
+  geom_line(aes(color = Evento), alpha = 0.9, size = 2.5, show.legend = F) +
+  geom_hline(yintercept = casos.activos.hoy$Cantidad, color = "#aa4586", linetype ="dotted") +
+  geom_text(x = 2020-03-11, 
+            y = casos.activos.hoy$Cantidad, 
+            label = paste0("Casos Activos = ", casos.activos.hoy$Cantidad), 
+            hjust = 0, vjust = 0, 
+            colour = "red", size = 1,
+            family = "URWGeometricW03-Light") +
+  scale_x_date(breaks = "2 weeks") +
+  scale_color_manual(values = pal) +
+  labs(x = "Fecha", 
+       y = "Cantidad de Casos",
+       title = "Evolución de Casos Activos en el tiempo.",
+       subtitle = paste0("Datos cierre: ", format(Sys.Date() - 1, "%A, %d de %B de %Y")),
+       caption = "Fuente de datos: https://covid19cubadata.github.io - Enlace a fichero de datos: https://covid19cuba.github.io/covid19cubadata.github.io/api/v1/evolution_of_cases_by_days.json - Gráfico realizado por: Frank Rodríguez López") +
+  theme_ATHENDAT_claro() +
+  theme(axis.text.x = element_text(angle = 17, hjust = 1))
+
+ggsave("figs/casos.activos.tiempo.png", width = 30, height = 10, units = "cm")
+
+image_write(agregar_logo(plot_path = "figs/casos.activos.tiempo.png",
+                         logo_path = "logo/logo.png",
+                         posicion_logo= "sd",
+                         logo_scale = 7), 
+            "figs/casos.activos.tiempo.png")

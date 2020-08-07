@@ -330,6 +330,9 @@ casos.prov.tiempo <- casos.prov.tiempo %>%
   rename(casos.acum.prov = casos.acum) %>% 
   arrange(fecha_confirmacion)
 
+
+casos.activos.hoy <- casos.tiempo.eventos %>% filter(Evento == "Casos Activos", Fecha == Sys.Date()-1)
+casos.activos.hoy$Cantidad
 ## Salva de los datos para su análisis
 
 save(cubadata, file = "rda/cubadata.rda")

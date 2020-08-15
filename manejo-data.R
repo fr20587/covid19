@@ -582,12 +582,7 @@ casos.activos.tiempo <- casos.tiempo.eventos %>%
   geom_area(alpha = 0.5, size = 2.5, show.legend = F) +
   geom_line(aes(color = Evento), alpha = 0.9, size = 2.5, show.legend = F) +
   geom_hline(yintercept = casos.activos.hoy$Cantidad, color = "#aa4586", linetype ="dotted") +
-  geom_text(x = 2020-03-11, 
-            y = casos.activos.hoy$Cantidad, 
-            label = paste0("Casos Activos = ", casos.activos.hoy$Cantidad), 
-            hjust = 0, vjust = 0, 
-            colour = "red", size = 1,
-            family = "URWGeometricW03-Light") +
+ 
   scale_x_date(breaks = "2 weeks") +
   scale_color_manual(values = pal) +
   labs(x = "Fecha", 
